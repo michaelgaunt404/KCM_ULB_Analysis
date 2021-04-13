@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>ULB Analysis</title>
+
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.17/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="site_libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="site_libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">KCM_ULB_Anlysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">ULB Analysis</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-04-13
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>KCM_ULB_Anlysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210318code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210318)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210318code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210318)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong6021c91"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 6021c91 </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrong6021c91" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version 6021c91. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  analysis/spurious_data.Rmd
+    Untracked:  code/data_analysis.R
+    Untracked:  code/data_import.R
+    Untracked:  code/general_development.R
+    Untracked:  code/joining_operations.R
+    Untracked:  code/utils_helpers_general.R
+    Untracked:  code/utils_script_specific.R
+    Untracked:  code/zz_emptyScriptTemplate.R
+    Untracked:  code/zz_localG.R
+
+Unstaged changes:
+    Modified:   .gitignore
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/ulb_analysis.Rmd</code>) and HTML (<code>docs/ulb_analysis.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+6021c91
+</td>
+<td>
+michaelgaunt404
+</td>
+<td>
+2021-04-13
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>This analysis was not able to determine a meaningful relationship between operational cost (total maintenance cost given miles driven per month) of a KCM vehicle’s. In particular, this analysis was not able to develop an answer to the question: is there a clear point in a vehicle’s operation when it becomes too financially burdensome to maintain?</p>
+</div>
+<div id="the-data" class="section level1">
+<h1>The Data</h1>
+<p>The data uses for this analysis was provided for by KCM. The data was cleaned and aggregated for the purposes of this analysis. Through initial exploratory data analysis, the data was found to be populated with dubious maintenance costs and vehicle meter data (very large costs values or meters values less than the previous month reading) - potentially caused during the data input process. The time series nature of the data and reliance upon previous month values is sensitive to errors like this and efforts were taken to remove data that seemed spurious.</p>
+<p>The data used for this analysis in its final form can be seen below:</p>
+<div id="htmlwidget-9d05e765d1af476db543" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9d05e765d1af476db543">{"x":{"filter":"none","extensions":["Buttons"],"fillContainer":true,"data":[[1654,100,1787,288,569,1670,1710,1799,258,1812,85,1520,314,2688,1649,1405,1305,267,1559,1723,582,1416,1530,1337,1684,1794,1768,1354,602,1809,1523,42,1760,1556,1707,503,1696,1776,1753,1396,160,525,231,508,593,142,1760,325,1327,1818,1747,134,301,321,2898,1768,73,1649,1321,2886,2895,1693,579,1627,2687,2877,600,1439,497,183,344,1412,307,99,51,1634,1759,584,1704,1554,1402,282,1711,294,1340,524,2777,1318,66,1635,83,103,1647,2763,1317,1326,1773,2683,1376,1419],["2015-02-01","2011-01-01","2019-08-01","2008-12-01","2010-08-01","2018-10-01","2014-06-01","2019-10-01","2012-05-01","2014-03-01","2007-12-01","2014-12-01","2008-04-01","2014-12-01","2012-12-01","2014-06-01","2015-06-01","2008-05-01","2012-11-01","2018-08-01","2008-08-01","2011-10-01","2015-05-01","2019-07-01","2012-08-01","2016-06-01","2019-10-01","2013-08-01","2010-06-01","2018-12-01","2018-06-01","2010-08-01","2015-03-01","2014-10-01","2018-03-01","2013-08-01","2012-12-01","2018-10-01","2013-04-01","2017-02-01","2010-05-01","2013-06-01","2014-12-01","2010-09-01","2010-02-01","2007-05-01","2016-07-01","2009-12-01","2013-12-01","2019-01-01","2015-10-01","2012-09-01","2008-02-01","2010-02-01","2019-04-01","2015-08-01","2013-08-01","2014-03-01","2016-11-01","2018-09-01","2019-09-01","2015-04-01","2016-04-01","2013-03-01","2016-08-01","2019-09-01","2019-04-01","2011-12-01","2006-10-01","2006-08-01","2008-11-01","2015-09-01","2007-10-01","2011-04-01","2010-05-01","2016-12-01","2019-06-01","2013-08-01","2013-08-01","2013-07-01","2012-04-01","2012-03-01","2013-05-01","2009-02-01","2009-11-01","2010-08-01","2018-12-01","2014-12-01","2010-07-01","2011-07-01","2009-11-01","2007-07-01","2014-08-01","2017-07-01","2013-02-01","2009-11-01","2017-10-01","2019-10-01","2012-09-01","2014-08-01"],[879.42,131.4,514.766,246.74,190.515,1614.044,1415.55,691.285,574.563,948.19,528.98238,107.281,245.16,814.531,577.55,985.27,97.694,125.66,647.81,188.371,587.29,914.081,570.68,365.809,929.515,905.239,176.786,245.98,1183.94,779.145,213.997,40.131,1372.799,438.82,560.675,208.76,272.65,1344.23,367.631,561.184,305.39,392.279,775.713,23.246,1604.2325,479.21904,412.64,213.545,195.74,311.91,120.099,12.642,272.9547,462.82,253.453,374.698,12.642,655.76,696.319,238.713,78.21,421.88,599.221,2065.89,414.628,821.08,1197.405,1094.482,25.764,512.99312,693.88,154.89,231.50115,1038.565,486.22,450.721,989.482,871.43,633.95,2248.45,515.639,1171.43,301.4,1102.37,777.51,675.803,70.37,1106.29,655.38,148.83,687.905,738.46269,1160.81,101.136,1226.05,457.685,196.502,649.075,419.526,65.64],[27638.747,60871.7881,61994.346,21018.32068,4490.315,89727.5595,18732.82,55841.464,69555.17988,2045.75,13830.81666,3448.987,19593.57444,867.937,10489.2469,45390.844,9101.34,15476.26737,17668.536,1198.04,1288.24,15043.361,22861.4725,87800.385,9591.553,28598.41,29770.808,35094.222,18915.8375,47290.558,51282.0495,39159.51914,13829.985,37911.9645,52399.013,5795.91529,5702.228,45436.011,1439.945,15206.489,44567.47804,86991.84129,9618.48356,17218.83074,11065.765,16709.00821,20607.509,50472.55652,30513.2525,45342.698,17606.621,34236.79081,17514.23759,57805.41562,3533.947,13004.075,70769.19293,27986.6969,50280.2035,2078.912,3522.2,14410.457,67045.5705,16855.955,9174.413,5144.291,95358.342,14498.7875,25.764,4112.56416,26223.75961,61649.717,11909.09661,50843.6167,42311.80695,58984.607,61763.468,45726.6255,6237.948,26233.769,23378.033,50816.26188,6882.913,19946.13593,4544.58,30443.73748,70.37,36947.035,43475.83878,148.83,30198.63163,13663.80537,20794.5925,3812.207,34210.5145,6331.8825,34342.541,30655.592,3577.5905,40256.012],[175026,333893,260788,243507,44486,305796,75500,234626,375354,18249,238398,28119,273126,2659,80185,247356,87053,303693,92664,56482,16034,109688,136626,341109,58610,120349,132284,215173,100390,242008,191889,360723,92307,177988,183335,48210,36055,252794,11946,104581,365281,227980,122256,128844,82433,315135,135387,198694,169016,211137,107811,384578,197022,187124,44882,90232,410650,143139,267692,24111,41724,22521,301653,90802,55519,34125,324297,114971,4410,256202,179489,240147,221064,355522,330725,241907,171537,205632,56173,123095,149985,352869,40471,234519,59765,165289,4497,241660,311280,368,286031,175735,98076,24678,191207,55318,219631,153525,29264,184283],[3,1,4,4,1,6,8,4,3,3,4,2,2,4,4,4,2,3,4,2,3,7,2,2,7,5,1,3,3,4,2,2,4,2,2,1,2,7,4,1,3,4,1,1,4,5,6,2,2,4,4,1,2,3,2,5,1,3,5,3,2,3,3,8,3,3,2,3,1,3,5,1,1,5,5,2,7,4,2,3,5,6,4,5,3,6,1,4,3,3,4,7,3,3,10,4,1,6,2,1],[27638.747,60871.7881,61994.346,21018.32068,4490.315,89727.5595,18732.82,55841.464,69555.17988,2045.75,13830.81666,3448.987,19593.57444,867.937,10489.2469,45390.844,9101.34,15476.26737,17668.536,1198.04,1288.24,15043.361,22861.4725,87800.385,9591.553,28598.41,29770.808,35094.222,18915.8375,47290.558,51282.0495,39159.51914,13829.985,37911.9645,52399.013,5795.91529,5702.228,45436.011,1439.945,15206.489,44567.47804,86991.84129,9618.48356,17218.83074,11065.765,16709.00821,20607.509,50472.55652,30513.2525,45342.698,17606.621,34236.79081,17514.23759,57805.41562,3533.947,13004.075,70769.19293,27986.6969,50280.2035,2078.912,3522.2,14410.457,67045.5705,16855.955,9174.413,5144.291,95358.342,14498.7875,25.764,4112.56416,26223.75961,61649.717,11909.09661,50843.6167,42311.80695,58984.607,61763.468,45726.6255,6237.948,26233.769,23378.033,50816.26188,6882.913,19946.13593,4544.58,30443.73748,70.37,36947.035,43475.83878,148.83,30198.63163,13663.80537,20794.5925,3812.207,34210.5145,6331.8825,34342.541,30655.592,3577.5905,40256.012],[0,0,0,0,0,0,0,0,0,0,0,0,0,-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-0,0],[174637,227377,258448,110566,42066,305471,73178,231318,216155,15966,69907,27829,106505,288,79155,244171,84733,100233,92219,56292,9655,108104,134746,336433,58270,117855,129934,208281,97355,239660,188969,168608,89007,177618,181004,45823,33669,250469,9519,104279,163318,225602,53337,124259,80084,58253,132087,136603,166506,207698,103708,113771,78894,137501,44881,87882,288479,142109,260079,23662,41672,20147,296088,90316,52883,33932,321243,23407,0,14798,133609,233144,52420,239901,140336,241530,169204,200300,53843,122767,145078,214685,38137,101516,54482,162778,0,236822,164080,0,128514,71862,97737,22154,187336,50425,217190,151139,25489,177709],[3471,-1273,3650,5276,1179,4079,1702,2788,2855,8662,2895,1238,2508,288,3864,3131,2364,3726,2913,3,5749,4530,965,3439,6311,3362,433,1923,2381,5889,1681,1897,3287,2348,1348,331,3047,4395,1551,3663,2381,1256,2356,5472,3877,2922,3929,2368,1472,4824,3236,5,2885,3043,6123,2092,1716,1946,2043,4581,2493,2964,1617,4481,4422,2088,1185,180,0,2154,4471,1312,2529,4183,1985,3741,587,3255,3719,997,5610,3599,2429,1938,5879,3864,0,1070,4345,0,3787,3368,4383,2540,2234,3573,1314,3221,589,1541],["175000","325000","250000","225000","25000","3e+05","75000","225000","375000","0","225000","25000","250000","0","75000","225000","75000","3e+05","75000","50000","0","1e+05","125000","325000","50000","1e+05","125000","2e+05","1e+05","225000","175000","350000","75000","175000","175000","25000","25000","250000","0","1e+05","350000","225000","1e+05","125000","75000","3e+05","125000","175000","150000","2e+05","1e+05","375000","175000","175000","25000","75000","4e+05","125000","250000","0","25000","0","3e+05","75000","50000","25000","3e+05","1e+05","0","250000","175000","225000","2e+05","350000","325000","225000","150000","2e+05","50000","1e+05","125000","350000","25000","225000","50000","150000","0","225000","3e+05","0","275000","175000","75000","0","175000","50000","2e+05","150000","25000","175000"],["150000","225000","250000","1e+05","25000","3e+05","50000","225000","2e+05","0","50000","25000","1e+05","0","75000","225000","75000","1e+05","75000","50000","0","1e+05","125000","325000","50000","1e+05","125000","2e+05","75000","225000","175000","150000","75000","175000","175000","25000","25000","250000","0","1e+05","150000","225000","50000","1e+05","75000","50000","125000","125000","150000","2e+05","1e+05","1e+05","75000","125000","25000","75000","275000","125000","250000","0","25000","0","275000","75000","50000","25000","3e+05","0","0","0","125000","225000","50000","225000","125000","225000","150000","2e+05","50000","1e+05","125000","2e+05","25000","1e+05","50000","150000","0","225000","150000","0","125000","50000","75000","0","175000","50000","2e+05","150000","25000","175000"],[0,0,0,0,0,1000,1000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1000,0,0,0,1000,0,0,0,0,1000,0,0,0,0,0,0,1000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2000,0,0,1000,1000,0,0,0,0,0,1000,0,0,0,0,0,2000,0,1000,0,1000,0,0,0,1000,0,0,0,0,1000,0,1000,0,0,0,0,0],[0.253362143474503,-0.103220738413197,0.141031780821918,0.0467664897649735,0.161590330788804,0.39569600392253,0.831698002350176,0.247950143472023,0.201247985989492,0.109465481413069,0.182722756476684,0.086656704361874,0.0977511961722488,2.82823263888889,0.149469461697723,0.314682210156499,0.0413257191201354,0.0337251744498121,0.222385856505321,62.7903333333333,0.102155157418682,0.201783885209713,0.591378238341969,0.106370747310265,0.147284899382031,0.269256097560976,0.408281755196305,0.127914716588664,0.497244855102898,0.13230514518594,0.127303390838786,0.0211549815498155,0.41764496501369,0.186890971039182,0.415931008902077,0.630694864048338,0.0894814571709878,0.305854379977247,0.237028368794326,0.153203385203385,0.128261234775304,0.312324044585987,0.32925,0.00424817251461988,0.413781919009543,0.164003778234086,0.105024179180453,0.0901794763513513,0.132975543478261,0.064657960199005,0.0371134116192831,2.5284,0.0946116811091854,0.152093328951692,0.0413935979095215,0.179109942638623,0.00736713286713287,0.336978417266187,0.340831620166422,0.052109364767518,0.0313718411552347,0.142334682860999,0.370575757575758,0.46103325150636,0.0937648123021257,0.39323754789272,1.01046835443038,6.08045555555556,null,0.238158365831012,0.155195705658689,0.118056402439024,0.0915386120996441,0.248282333253646,0.244947103274559,0.120481422079658,1.68565928449744,0.267720430107527,0.170462489916644,2.25521564694082,0.0919142602495544,0.325487635454293,0.124083985179086,0.568818369453044,0.132252083687702,0.174897256728778,null,1.03391588785047,0.150835443037975,null,0.181649062582519,0.219258518408551,0.264843714350901,0.0398173228346457,0.548813786929275,0.128095438007277,0.149544901065449,0.201513505122633,0.712268251273345,0.0425957170668397],["KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS","KCMAS"],["DIESEL01","DIESEL01","GAS02","DIESEL01","GAS02","DIESEL01","HYBRID01","GAS02","DIESEL01","GAS02","DIESEL01","GAS02","DIESEL01","LPG","DIESEL01","DIESEL01","GAS02","DIESEL01","DIESEL01","GAS02","DIESEL01","DIESEL01","DIESEL01","DIESEL01","DIESEL01","GAS02","GAS02","DIESEL01","DIESEL01","GAS02","DIESEL01","DIESEL01","GAS02","DIESEL01","HYBRID01","GAS02","HYBRID01","GAS02","GAS02","GAS02","DIESEL01","DIESEL01","GAS01","DIESEL01","DIESEL01","DIESEL01","GAS02","DIESEL01","DIESEL01","GAS02","GAS02","DIESEL01","DIESEL01","DIESEL01","GAS03","GAS02","DIESEL01","DIESEL01","DIESEL01","GAS03","GAS03","HYBRID01","DIESEL01","DIESEL01","LPG","GAS03","DIESEL01","DIESEL01","GAS02","GAS01","DIESEL01","DIESEL01","DIESEL01","DIESEL01","DIESEL01","DIESEL01","GAS02","DIESEL01","HYBRID01","DIESEL01","DIESEL01","DIESEL01","HYBRID01","DIESEL01","DIESEL01","DIESEL01","GAS02","DIESEL01","DIESEL01","DIESEL01","DIESEL01","DIESEL01","DIESEL01","LPG","DIESEL01","DIESEL01","GAS02","LPG","GAS02","DIESEL01"],["2010","2003","2012","2002","2008","2010","2011","2013","2001","2013","2002","2010","2002","2014","2010","2009","2008","2001","2010","2012","2008","2009","2010","2009","2010","2013","2012","2009","2008","2013","2010","1999","2012","2010","2011","2006","2011","2012","2012","2009","1999","2006","1998","2006","2008","1999","2012","2004","2009","2013","2012","1999","2002","2004","2015","2012","2002","2010","2009","2015","2015","2011","2008","2010","2014","2015","2008","2008","2006","1995","2004","2009","2002","2003","1999","2010","2012","2008","2011","2010","2009","2001","2011","2002","2009","2006","2017","2009","2002","2010","2002","2003","2010","2016","2009","2009","2012","2014","2009","2009"],["TRS08680","224415",null,"T050027000","T080075900","TRS08707",null,null,"T050024000",null,"T05AT12000","TRS08392","T050029600",null,"TRS08675","RS08123","RS07649","T050024900","TRS08553","277961","T080076300","RS08113","TRS08519","RS07785","TRS08776",null,null,"RS07772","T080076200",null,"RS08495","T05AT19900",null,"TRS08573",null,"RS 06490",null,null,"277982","RS08019","T05AT19600","RS 06522","T05AT53700","RS 06510","T080077800","T05AT17800",null,"TRS05183","RS07788",null,"277976","T05AT17000","T050028300","TRS05172",null,null,"T05AT10800","TRS08675","RS07773",null,null,null,"T080078100","TRS08684",null,null,"T080078700",null,"RS 06494","T05AT43600","TRS05176","RS08119","T050028900","224414","T05AT20900","TRS08691",null,"T080076500",null,"TRS08571","RS08122","T050026400",null,"T050027600","RS07782","RS 06519",null,"RS07771","T05AT10100","TRS08692","T05AT11800","224419","TRS08673",null,"RS07770","RS07778",null,null,"RS08018","RS08128"],["SUPREME","SUPREME","GOSHEN","CHAMPION","SUPREME","SUPREME","SUPREME","GOSHEN","CHAMPION","GOSHEN","CHAMPION","SUPREME","CHAMPION","GOSHEN","SUPREME","SUPREME","SUPREME","CHAMPION","SUPREME","CHEVROLET","SUPREME","SUPREME","SUPREME","SUPREME","SUPREME","GOSHEN","GOSHEN","SUPREME","SUPREME","GOSHEN","SUPREME","SUPREME","GOSHEN","SUPREME","SUPREME","SUPREME","SUPREME","GOSHEN","GOSHEN","SUPREME","SUPREME","SUPREME","CHEVROLET","SUPREME","SUPREME","SUPREME","GOSHEN","SUPREME","SUPREME","GOSHEN","GOSHEN","SUPREME","CHAMPION","SUPREME","MOB VENTUR","GOSHEN","CHAMPION","SUPREME","SUPREME","MOB VENTUR","MOB VENTUR","SUPREME","SUPREME","SUPREME","GOSHEN","MOB VENTUR","SUPREME","SUPREME","SUPREME","GOSHEN","SUPREME","SUPREME","CHAMPION","SUPREME","SUPREME","SUPREME","GOSHEN","SUPREME","SUPREME","SUPREME","SUPREME","CHAMPION","SUPREME","CHAMPION","SUPREME","SUPREME","BRAUN","SUPREME","CHAMPION","SUPREME","CHAMPION","SUPREME","SUPREME","GOSHEN","SUPREME","SUPREME","GOSHEN","GOSHEN","SUPREME","SUPREME"],["GM","FORD","GM","FORD","FORD","GM","FORD","GM","FORD","GM","FORD","FORD","FORD","FORD","GM","GM","FORD","FORD","GM","GM","GM","GM","GM","GM","GM","GM","GM","GM","GM","GM","GM","FORD","GM","GM","FORD","FORD","FORD","GM","GM","FORD","FORD","FORD","GM","FORD","GM","FORD","GM","FORD","GM","GM","GM","FORD","FORD","FORD","AM GENERAL","GM","FORD","GM","GM","AM GENERAL","AM GENERAL","FORD","GM","GM","FORD","AM GENERAL","GM","FORD","FORD","FORD","FORD","GM","FORD","FORD","FORD","GM","GM","GM","FORD","GM","GM","FORD","FORD","FORD","GM","FORD","CHRYSLER","GM","FORD","GM","FORD","FORD","GM","FORD","GM","GM","GM","FORD","FORD","GM"],["SENATOR","SENATOR","GCII","CHALLENGER","CANDIDATE","SENATOR","SENATOR","GCII","CHALLENGER","GCII","CHALLENGER","CANDIDATE","CHALLENGER","GC II","SENATOR","SENATOR","CANDIDATE","CHALLENGER","SENATOR","EXPRESS","SENATOR","SENATOR","SENATOR","SENATOR","SENATOR","GCII","GCII","SENATOR","SENATOR","GCII","SENATOR","SENATOR","GCII","SENATOR","SENATOR","CANDIDATE","SENATOR","GCII","GCII","CANDIDATE","SENATOR","SENATOR","ASTRO","SENATOR","SENATOR","SENATOR","GCII","SENATOR","SENATOR","GCII","GCII","SENATOR","CHALLENGER","SENATOR","MV-1","GCII","CHALLENGER","SENATOR","SENATOR","MV-1","MV-1","SENATOR","SENATOR","SENATOR","GC II","MV-1","SENATOR","CANDIDATE","CANDIDATE","PACER","SENATOR","SENATOR","CHALLENGER","SENATOR","SENATOR","SENATOR","GCII","SENATOR","SENATOR","SENATOR","SENATOR","CHALLENGER","SENATOR","CHALLENGER","SENATOR","SENATOR","GRAND CARAVA","SENATOR","CHALLENGER","SENATOR","CHALLENGER","SENATOR","SENATOR","GC II","SENATOR","SENATOR","GCII","GC II","CANDIDATE","SENATOR"],[0,0,2332,0,0,0,0,2252,0,2283,0,0,0,2296,0,0,0,0,273,0,0,0,0,0,0,2484,2324,0,0,2337,2895,0,2585,313,0,2284,0,2324,2318,0,0,0,0,2358,0,0,2585,0,0,2367,2343,0,0,0,85,2324,0,0,0,49,52,0,0,0,2576,68,0,91426,2286,0,0,0,0,0,0,0,2332,0,0,251,0,0,0,0,0,0,12,0,0,0,0,0,0,2493,0,0,2440,2323,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[337,0,2332,0,2280,299,2322,2252,0,2283,0,280,0,2296,315,330,2300,0,273,149,2371,324,311,2270,303,2484,2324,2390,2394,2337,2895,0,2585,313,2331,2284,2386,2324,2318,300,0,2323,0,2374,2315,0,2585,0,2246,2367,2343,0,0,0,85,2324,0,315,2332,49,52,2374,2302,389,2576,68,2506,91426,2286,0,0,550,0,0,0,313,2332,2314,2324,251,390,0,2334,0,2303,2305,34,2260,0,315,0,0,207,2493,2276,2409,2440,2323,300,362],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[320622,419451,268220,379029,146853,331501,222338,236478,395328,243250,398065,66666,394562,139749,304188,354472,130798,401451,302290,68011,304823,361613,230788,348347,335224,255006,137325,349814,307360,254333,225080,426660,204382,310788,227779,54775,244922,275203,193240,112621,434160,311848,142967,186419,358891,358991,204382,241559,220580,239551,195547,384933,354575,241921,56205,137325,422854,304188,326207,47896,46638,162268,363403,301205,139783,38950,335958,137234,150314,283623,265074,339587,400566,398361,408199,331662,178311,312656,209622,308719,361963,378204,200116,389902,350004,318220,15449,350319,430062,310034,394035,392505,263256,97873,329238,342361,257631,154065,115799,328823],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],["2019-10-28T16:11:00Z","2013-02-20T00:00:00Z","2019-10-30T00:00:00Z","2013-12-27T00:00:00Z","2019-11-05T20:55:00Z","2019-11-05T16:02:00Z","2019-11-05T21:47:00Z","2019-11-05T17:44:00Z","2014-04-21T00:00:00Z","2019-11-05T18:57:00Z","2013-02-19T15:35:00Z","2020-01-29T14:45:44Z","2012-02-20T00:00:00Z","2019-11-05T23:05:00Z","2019-10-30T20:52:00Z","2018-04-26T00:00:00Z","2018-12-31T00:00:00Z","2011-08-29T00:00:00Z","2019-11-05T21:57:00Z","2020-02-28T00:00:00Z","2019-11-05T14:28:00Z","2019-03-12T00:00:00Z","2019-11-05T20:59:00Z","2019-10-25T21:10:00Z","2019-11-05T22:47:00Z","2019-11-05T18:14:00Z","2020-06-02T12:51:00Z","2019-10-30T00:00:00Z","2019-11-05T18:34:00Z","2019-04-26T00:00:00Z","2019-11-05T14:14:00Z","2014-03-31T00:00:00Z","2019-11-05T20:12:00Z","2019-11-04T13:33:00Z","2019-11-05T17:02:00Z","2017-08-31T00:00:00Z","2019-11-05T23:38:00Z","2019-08-10T00:00:00Z","2019-02-07T20:50:00Z","2017-11-30T00:00:00Z","2012-11-25T00:00:00Z","2019-10-16T12:10:00Z","2019-10-02T12:26:32Z","2015-12-09T07:13:43Z","2019-11-05T14:41:00Z","2010-01-26T15:34:26Z","2019-11-05T20:12:00Z","2011-08-27T00:00:00Z","2017-06-27T00:00:00Z","2019-11-05T22:49:00Z","2019-02-28T12:11:00Z","2014-03-25T00:00:00Z","2014-03-27T00:00:00Z","2011-11-30T00:00:00Z","2019-11-05T20:52:00Z","2020-06-02T12:51:00Z","2014-09-22T00:00:00Z","2019-10-30T20:52:00Z","2019-10-24T18:38:00Z","2019-11-05T16:10:00Z","2019-11-05T19:24:00Z","2019-11-05T16:40:00Z","2019-10-23T14:35:00Z","2019-11-05T15:34:00Z","2019-11-04T16:08:00Z","2019-11-05T18:44:00Z","2019-11-05T17:34:00Z","2017-04-30T00:00:00Z","2018-09-07T00:00:00Z","2008-05-27T12:00:00Z","2013-02-08T00:00:00Z","2019-10-25T15:41:00Z","2013-05-09T00:00:00Z","2012-07-08T00:00:00Z","2012-12-03T00:00:00Z","2019-11-05T16:10:00Z","2019-11-05T21:22:00Z","2019-11-05T22:35:00Z","2019-11-05T17:24:00Z","2019-11-05T16:07:00Z","2019-10-24T00:00:00Z","2012-12-04T00:00:00Z","2019-11-05T18:16:00Z","2013-02-28T16:55:00Z","2019-11-05T16:52:00Z","2016-09-30T12:10:18Z","2020-01-31T00:00:00Z","2019-11-01T16:45:00Z","2014-03-18T00:00:00Z","2019-11-05T23:00:00Z","2013-05-26T00:00:00Z","2013-10-09T00:00:00Z","2019-11-05T15:50:00Z","2019-11-05T17:47:00Z","2019-05-16T00:00:00Z","2019-11-05T17:08:00Z","2019-11-01T21:45:00Z","2019-11-05T21:19:00Z","2020-01-29T14:45:44Z","2019-11-05T21:58:00Z"],["2011-05-27T00:00:00Z","2003-10-13T00:00:00Z","2013-01-10T00:00:00Z","1999-08-12T00:00:00Z","2008-02-28T00:00:00Z","2011-05-27T00:00:00Z","2011-09-27T00:00:00Z","2013-09-24T00:00:00Z","1999-08-12T00:00:00Z","2013-10-31T00:00:00Z","2002-05-07T00:00:00Z","2010-08-05T00:00:00Z","1999-08-12T00:00:00Z","2014-11-24T00:00:00Z","2011-05-27T00:00:00Z","2009-08-25T00:00:00Z","2008-08-15T00:00:00Z","1999-08-12T00:00:00Z","2011-02-15T00:00:00Z","2012-08-30T00:00:00Z","2008-04-03T00:00:00Z","2009-08-25T00:00:00Z","2010-12-22T00:00:00Z","2008-10-30T00:00:00Z","2011-05-27T00:00:00Z","2013-09-23T00:00:00Z","2013-01-10T00:00:00Z","2008-10-30T00:00:00Z","2008-03-25T00:00:00Z","2013-09-24T00:00:00Z","2010-10-20T00:00:00Z","1999-08-17T00:00:00Z","2013-01-10T00:00:00Z","2011-02-15T00:00:00Z","2011-09-27T00:00:00Z","2006-09-06T00:00:00Z","2011-08-26T00:00:00Z","2012-10-31T00:00:00Z","2012-12-01T00:00:00Z","2009-10-15T00:00:00Z","2000-03-21T00:00:00Z","2006-09-12T00:00:00Z","2002-06-30T00:00:00Z","2006-08-21T00:00:00Z","2008-04-03T00:00:00Z","2000-03-21T00:00:00Z","2013-01-10T00:00:00Z","2004-08-26T00:00:00Z","2008-10-30T00:00:00Z","2013-10-01T00:00:00Z","2012-10-31T00:00:00Z","2000-03-21T00:00:00Z","1999-08-12T00:00:00Z","2004-08-26T00:00:00Z","2017-09-26T00:00:00Z","2013-01-10T00:00:00Z","2002-05-31T00:00:00Z","2011-05-27T00:00:00Z","2008-10-01T00:00:00Z","2017-09-26T00:00:00Z","2017-09-26T00:00:00Z","2011-08-26T00:00:00Z","2008-03-25T00:00:00Z","2011-06-21T00:00:00Z","2014-10-31T00:00:00Z","2017-09-26T00:00:00Z","2008-04-03T00:00:00Z","2010-03-05T00:00:00Z","2006-09-06T00:00:00Z","1996-07-15T00:00:00Z","2004-08-26T00:00:00Z","2009-09-08T00:00:00Z","1999-08-12T00:00:00Z","2003-10-13T00:00:00Z","1999-12-14T00:00:00Z","2011-05-27T00:00:00Z","2013-01-10T00:00:00Z","2008-04-03T00:00:00Z","2011-09-27T00:00:00Z","2011-02-15T00:00:00Z","2009-08-25T00:00:00Z","1999-08-12T00:00:00Z","2011-09-27T00:00:00Z","1999-08-12T00:00:00Z","2008-10-30T00:00:00Z","2006-09-12T00:00:00Z","2017-04-05T00:00:00Z","2008-10-30T00:00:00Z","2002-05-31T00:00:00Z","2011-05-27T00:00:00Z","2002-05-31T00:00:00Z","2003-10-13T00:00:00Z","2011-05-27T00:00:00Z","2016-11-04T00:00:00Z","2008-10-30T00:00:00Z","2008-10-30T00:00:00Z","2012-10-31T00:00:00Z","2014-11-24T00:00:00Z","2009-10-15T00:00:00Z","2009-09-03T00:00:00Z"],["M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M"],["H","N","H","H","H","H","N","H","N","H","N","H","N","H","H","H","H","N","H","H","H","H","H","H","H","H","H","H","H","H","H","N","H","H","N","H","N","H","H","H","N","H","N","H","H","N","H","N","H","H","H","N","N","N","N","H","N","H","H","N","N","N","H","H","H","N","H","H","H","N","N","H","N","N","N","H","H","H","N","H","H","N","N","N","H","H","H","H","N","H","N","N","H","H","H","H","H","H","H","H"],["2011-03-01T00:00:00Z","2003-10-13T00:00:00Z","2012-12-18T00:00:00Z","1999-08-12T00:00:00Z","2007-12-07T00:00:00Z","2011-03-01T00:00:00Z","2011-07-05T00:00:00Z","2013-08-16T00:00:00Z","1999-08-12T00:00:00Z","2013-10-13T00:00:00Z","2002-05-07T00:00:00Z","2010-06-09T00:00:00Z","1999-08-12T00:00:00Z","2014-11-20T00:00:00Z","2011-03-01T00:00:00Z","2009-03-05T00:00:00Z","2008-03-14T00:00:00Z","1999-08-12T00:00:00Z","2010-11-30T00:00:00Z","2012-07-11T00:00:00Z","2008-02-07T00:00:00Z","2009-03-05T00:00:00Z","2010-03-01T00:00:00Z","2008-03-14T00:00:00Z","2011-03-01T00:00:00Z","2013-08-23T00:00:00Z","2012-12-18T00:00:00Z","2008-03-14T00:00:00Z","2008-02-07T00:00:00Z","2013-08-24T00:00:00Z","2010-10-08T00:00:00Z","1999-08-17T00:00:00Z","2012-12-18T00:00:00Z","2010-12-28T00:00:00Z","2011-07-05T00:00:00Z","2006-07-26T00:00:00Z","2011-07-05T00:00:00Z","2012-10-31T00:00:00Z","2012-11-20T00:00:00Z","2009-01-30T00:00:00Z","2000-03-21T00:00:00Z","2006-03-08T00:00:00Z","2002-06-30T00:00:00Z","2006-07-28T00:00:00Z","2008-02-07T00:00:00Z","2000-03-21T00:00:00Z","2012-12-18T00:00:00Z","2004-08-26T00:00:00Z","2008-03-14T00:00:00Z","2013-08-30T00:00:00Z","2012-10-31T00:00:00Z","2000-03-21T00:00:00Z","1999-08-12T00:00:00Z","2004-08-26T00:00:00Z","2017-07-27T00:00:00Z","2012-12-18T00:00:00Z","2002-05-31T00:00:00Z","2011-03-01T00:00:00Z","2008-03-14T00:00:00Z","2017-06-09T00:00:00Z","2017-06-16T00:00:00Z","2011-07-05T00:00:00Z","2008-02-07T00:00:00Z","2011-03-01T00:00:00Z","2014-10-31T00:00:00Z","2017-05-19T00:00:00Z","2008-02-07T00:00:00Z","2010-03-05T00:00:00Z","2006-07-26T00:00:00Z","1996-07-15T00:00:00Z","2004-08-26T00:00:00Z","2009-03-05T00:00:00Z","1999-08-12T00:00:00Z","2003-10-13T00:00:00Z","1999-12-14T00:00:00Z","2011-03-01T00:00:00Z","2012-12-18T00:00:00Z","2008-02-07T00:00:00Z","2011-07-05T00:00:00Z","2010-12-28T00:00:00Z","2009-03-05T00:00:00Z","1999-08-12T00:00:00Z","2011-07-05T00:00:00Z","1999-08-12T00:00:00Z","2008-03-14T00:00:00Z","2006-03-08T00:00:00Z","2017-03-31T00:00:00Z","2008-03-14T00:00:00Z","2002-05-31T00:00:00Z","2011-03-01T00:00:00Z","2002-05-31T00:00:00Z","2003-10-13T00:00:00Z","2011-03-01T00:00:00Z","2016-09-15T00:00:00Z","2008-03-14T00:00:00Z","2008-03-14T00:00:00Z","2012-10-31T00:00:00Z","2014-10-20T00:00:00Z","2009-01-30T00:00:00Z","2009-03-05T00:00:00Z"],["2010-01-01","2003-01-01","2012-01-01","2002-01-01","2008-01-01","2010-01-01","2011-01-01","2013-01-01","2001-01-01","2013-01-01","2002-01-01","2010-01-01","2002-01-01","2014-01-01","2010-01-01","2009-01-01","2008-01-01","2001-01-01","2010-01-01","2012-01-01","2008-01-01","2009-01-01","2010-01-01","2009-01-01","2010-01-01","2013-01-01","2012-01-01","2009-01-01","2008-01-01","2013-01-01","2010-01-01","1999-01-01","2012-01-01","2010-01-01","2011-01-01","2006-01-01","2011-01-01","2012-01-01","2012-01-01","2009-01-01","1999-01-01","2006-01-01","1998-01-01","2006-01-01","2008-01-01","1999-01-01","2012-01-01","2004-01-01","2009-01-01","2013-01-01","2012-01-01","1999-01-01","2002-01-01","2004-01-01","2015-01-01","2012-01-01","2002-01-01","2010-01-01","2009-01-01","2015-01-01","2015-01-01","2011-01-01","2008-01-01","2010-01-01","2014-01-01","2015-01-01","2008-01-01","2008-01-01","2006-01-01","1995-01-01","2004-01-01","2009-01-01","2002-01-01","2003-01-01","1999-01-01","2010-01-01","2012-01-01","2008-01-01","2011-01-01","2010-01-01","2009-01-01","2001-01-01","2011-01-01","2002-01-01","2009-01-01","2006-01-01","2017-01-01","2009-01-01","2002-01-01","2010-01-01","2002-01-01","2003-01-01","2010-01-01","2016-01-01","2009-01-01","2009-01-01","2012-01-01","2014-01-01","2009-01-01","2009-01-01"],[1857,2922,2769,2526,943,3195,1247,2464,4138,424,2160,1795,2282,334,1065,1977,2708,2677,1035,2404,213,1003,1946,3833,943,1247,2830,1673,882,2160,3073,4230,1155,1734,2616,2769,700,2465,456,2953,4138,2708,6178,1704,762,3042,1643,2161,1795,2191,1369,4992,2222,2223,1551,1308,4230,1520,2861,1339,1704,1551,3013,1155,943,1704,4108,1430,273,4230,1766,2434,2099,3012,4138,2526,2708,2039,943,1277,1186,4077,851,2588,304,1673,699,2160,3103,546,2861,1642,1673,547,1492,304,2100,2099,1339,2038],["5","8","7","6","2","8","3","6","11","1","5","4","6","0","2","5","7","7","2","6","0","2","5","10","2","3","7","4","2","5","8","11","3","4","7","7","1","6","1","8","11","7","16","4","2","8","4","5","4","6","3","13","6","6","4","3","11","4","7","3","4","4","8","3","2","4","11","3","0","11","4","6","5","8","11","6","7","5","2","3","3","11","2","7","0","4","1","5","8","1","7","4","4","1","4","0","5","5","3","5"]],"container":"<table class=\"display fill-container\">\n  <thead>\n    <tr>\n      <th>Unit Id<\/th>\n      <th>Fisc Pd Corr<\/th>\n      <th>Event Cost Mnth Ttl<\/th>\n      <th>Event Cost Max<\/th>\n      <th>Meter Max Mnth<\/th>\n      <th>Wo Count<\/th>\n      <th>Event Cost Mnth Ttl Cumm<\/th>\n      <th>Event Cost Check<\/th>\n      <th>Meter 0 Corr<\/th>\n      <th>Meter Diff Mnth<\/th>\n      <th>Meter Bin<\/th>\n      <th>Meter Bin O Corr<\/th>\n      <th>Cost Bin<\/th>\n      <th>Event Cost Per Meter Per Mnth<\/th>\n      <th>Company<\/th>\n      <th>Mcc<\/th>\n      <th>Year<\/th>\n      <th>Asset No<\/th>\n      <th>Make<\/th>\n      <th>Manufacturer<\/th>\n      <th>Model<\/th>\n      <th>Acquis Meter<\/th>\n      <th>Acquis Meter2<\/th>\n      <th>In Serv Meter<\/th>\n      <th>In Serv Meter2<\/th>\n      <th>Meter<\/th>\n      <th>Meter2<\/th>\n      <th>Meter Date<\/th>\n      <th>Meter Date2<\/th>\n      <th>Meter Type<\/th>\n      <th>Meter Type2<\/th>\n      <th>Acquis Dt<\/th>\n      <th>Nu Year<\/th>\n      <th>Age<\/th>\n      <th>Age Bin<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollY":null,"dom":"Blftipr","buttons":["copy","csv"],"initComplete":"function(settings, json) {\n$('body').css({'font-family': 'Calibri'});\n}","columnDefs":[{"className":"dt-right","targets":[0,2,3,4,5,6,7,8,9,12,13,21,22,23,24,25,26,33]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.initComplete"],"jsHooks":[]}</script>
+</div>
+<div id="the-analysis" class="section level1">
+<h1>The analysis</h1>
+<p>This section provides an overview of the analysis that was carried out. A number of plots have been provided to provide insight as to why a link was not able to be found between maintenance cost given the age or mileage of a vehicle.</p>
+<p>The two plots below (tabbed) depict maintenance costs for vehicles by age and meter. Both plots are series box plot graphs which detail the distribution of monthly maintenance cost/miles driven ratio (MMMR) given age/meter bins, respectively. Each depict the an increase of MMMR in the early age/meter range and a plateauing of this value. These plots are more or less the same as age and vehicle mileage meter are highly correlated. The age plot does deviate from the meter plot by demonstrating an increase in variance and instability of MMMR values - this is likely due to a smaller number of vehicles in the higher age range thus being more sustainable to the influence of a few extreme values.</p>
+<p>It is important to highlight what is not seen in either of these plots: an upward increase in MMMR in the later stages of a vehicles operation. Intuitively, an older vehicle may undergo more or more expensive maintenance events resulting in an increase in MMMR. This behavior would be expected to look like hockey stick - a flat trend follows by an inflection point where the MMMR would steadily increase (or potentially a step increase) - but this is not the case.</p>
+<p><em>Note:</em> The red dot is the mean value of MMMR per bin while the flat bar in the box indicates the MMMR median per bin.</p>
+<div id="aggreagted-costmile-plots" class="section level2 tabset tabset-fade tabset-pills">
+<h2>Aggreagted Cost/Mile Plots</h2>
+<div id="by-age" class="section level3">
+<h3>By Age</h3>
+<p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-3-1.png" width="1440" style="display: block; margin: auto;" /></p>
+</div>
+<div id="by-meter" class="section level3">
+<h3>By Meter</h3>
+<p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-4-1.png" width="1440" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="section" class="section level2 unnumbered">
+<h2></h2>
+<p>The plots above were broken out by mcc/make/model in order to investigate potential hidden MMMR trends saturated by the aggregation of all vehicles into a single plot. The plots below are all density ridge plots depicting the distribution of MMMR values per meter bin for different vehicle attributes - mcc status, manufacturer, model, and make of the vehicle.</p>
+<p>All of these plots show similar behavior as the plots above - no large increase in MMMR in the later operational usage ranges. There is no definitive inflection point that marks an increase in operational cost; at best, some plots depict a slight, constant upward drift of MMMR but this alone does not provide clear indication as to when a vehicle becomes financially burdensome.</p>
+<p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-6-1.png" width="1620" style="display: block; margin: auto;" /></p>
+<p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-7-1.png" width="1620" style="display: block; margin: auto;" /></p>
+<p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-8-1.png" width="1620" style="display: block; margin: auto;" /></p>
+<p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-9-1.png" width="1620" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="additional-examination" class="section level1">
+<h1>Additional Examination</h1>
+<p>The plots below depicts the extreme skewness of total monthly vehicle maintenance costs. Both plots are kernel density plots that depict the distribution of cost events as defined by $1000 increments. The first plot depicts the data as it appears naturally, the second has a log adjustment applied to the x axis.</p>
+<p>Both plots indicate an there are a few extreme cost events prevalent in the data, the second plot shows a normal distribution of costs that is centered ~$1000 - with the bulk of maintenance costs being lower than that.</p>
+<div id="extreme-skewness-in-total-monthly-maintenance-costs" class="section level2 tabset tabset-fade tabset-pills">
+<h2>Extreme Skewness in Total Monthly Maintenance Costs</h2>
+<div id="non-augmented" class="section level3">
+<h3>Non-Augmented</h3>
+<p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-10-1.png" width="1440" style="display: block; margin: auto;" /></p>
+</div>
+<div id="log-base-10-scale" class="section level3">
+<h3>Log base 10 Scale</h3>
+<p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-11-1.png" width="1440" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="section-1" class="section level2 unnumbered">
+<h2></h2>
+<p>This is relevant in determining if the frequency of <strong>expensive</strong> maintenance events and if there is an increase in said events given the and older operational age (age/meter) of a vehicle. The total monthly maintenance cost for each vehicle was binned into $1000 groupings and the number of these particular groupings were counted given the meter of the vehicle. The plot below depicts the number of maintenance event occurrences (binned by 000’s of dollars) given the meter vehicle bin - the y scale has been logged scaled.</p>
+<p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-12-1.png" width="1440" style="display: block; margin: auto;" /></p>
+<p>The above plot restates the assertions made above:</p>
+<ul>
+<li>Higher monthly total maintenance costs occur much less frequently than <strong>cheaper</strong> monthly totals</li>
+<li>There are generally less occurrences of maintenance events at all cost levels at lower meter ranges
+<ul>
+<li>This seems to be in line with the reasoning that newer vehicles may not require as much work as older vehicles</li>
+</ul></li>
+<li>Occurrence of maintenance events rises until about 100,000 miles which is when routine maintenance may increase</li>
+<li>Occurrence of maintenance events fall for all cost levels in the extreme meter ranges</li>
+<li>More expensive cost events occur in the middle meter ranges</li>
+</ul>
+<p>Again, there is no drastic increase in the number of maintenance events at any cost level and no indication of a point at which a vehicle should be reliably removed from the fleet given the operational costs.</p>
+<p>For the sake of completeness, the below plot shows occurrences of maintenance events per meter given the highest mileage vehicle types in the data. each vehicle plot shows roughly the same behavior as the aggregated plot above with a few notable exceptions:</p>
+<ul>
+<li>The champion and Hoshen seem to have a steady increase in $2000-3000 maintenance events over the course of their life
+<ul>
+<li>However, the number of these events are so low they are likely buried by the lower cost events that occur much more frequently</li>
+</ul></li>
+</ul>
+<p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-13-1.png" width="1440" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre><code>R version 3.6.2 (2019-12-12)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 17134)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] ggridges_0.5.3       here_1.0.1           data.validator_0.1.5
+ [4] skimr_2.1.2          DT_0.17              lubridate_1.7.9.2   
+ [7] data.table_1.13.2    janitor_2.1.0        readxl_1.3.1        
+[10] magrittr_2.0.1       forcats_0.5.1        stringr_1.4.0       
+[13] dplyr_1.0.4          purrr_0.3.4          readr_1.4.0         
+[16] tidyr_1.1.3          tibble_3.0.5         ggplot2_3.3.3       
+[19] tidyverse_1.3.0      workflowr_1.6.2     
+
+loaded via a namespace (and not attached):
+ [1] httr_1.4.2        sass_0.3.1        jsonlite_1.7.2    modelr_0.1.8     
+ [5] bslib_0.2.4       assertthat_0.2.1  highr_0.8         cellranger_1.1.0 
+ [9] yaml_2.2.1        pillar_1.5.0      backports_1.2.1   glue_1.4.2       
+[13] digest_0.6.27     promises_1.1.1    rvest_0.3.6       snakecase_0.11.0 
+[17] colorspace_2.0-0  htmltools_0.5.1.1 httpuv_1.5.4      plyr_1.8.6       
+[21] pkgconfig_2.0.3   broom_0.7.5       haven_2.3.1       scales_1.1.1     
+[25] whisker_0.4       later_1.1.0.1     git2r_0.28.0      farver_2.0.3     
+[29] generics_0.1.0    ellipsis_0.3.1    withr_2.4.1       repr_1.1.3       
+[33] cli_2.3.1         crayon_1.4.1      evaluate_0.14     ps_1.3.2         
+[37] fs_1.5.0          fansi_0.4.2       xml2_1.3.2        tools_3.6.2      
+[41] hms_1.0.0         lifecycle_1.0.0   munsell_0.5.0     reprex_1.0.0     
+[45] compiler_3.6.2    jquerylib_0.1.3   rlang_0.4.10      debugme_1.1.0    
+[49] grid_3.6.2        rstudioapi_0.13   htmlwidgets_1.5.3 crosstalk_1.1.1  
+[53] labeling_0.4.2    base64enc_0.1-3   rmarkdown_2.7     gtable_0.3.0     
+[57] DBI_1.1.1         R6_2.5.0          knitr_1.31        utf8_1.1.4       
+[61] rprojroot_2.0.2   stringi_1.5.3     Rcpp_1.0.6        vctrs_0.3.6      
+[65] dbplyr_2.1.0      tidyselect_1.1.0  xfun_0.19        </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
