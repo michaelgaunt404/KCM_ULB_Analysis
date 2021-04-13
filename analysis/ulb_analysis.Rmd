@@ -1,0 +1,213 @@
+---
+title: "ULB Analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  cache = FALSE, cache.lazy = FALSE, autodep = TRUE, warning = FALSE, 
+  message = FALSE, echo = TRUE, dpi = 180,
+  fig.width = 8, fig.height = 5, echo = FALSE
+  )
+```
+
+```{r include=FALSE}
+#sources local global file
+source(here::here("code/zz_localG.r")) 
+
+#loads the data
+o_wo = readRDS(here("data/o_wo.rds"))
+o_wo_agg = readRDS(here("data/o_wo_agg.rds"))
+udcm = readRDS(here("data/udcm.rds"))
+joined = readRDS(here("data/joined.rds"))
+```
+
+
+# Summary 
+
+This analysis was not able to determine a meaningful relationship between operational cost (total maintenance cost given miles driven per month) of a KCM vehicle's. In particular, this analysis was not able to develop an answer to the question: is there a clear point in a vehicle's operation when it becomes too financially burdensome to maintain?
+
+# The Data
+
+The data uses for this analysis was provided for by KCM. The data was cleaned and aggregated for the purposes of this analysis. Through initial exploratory data analysis, the data was found to be populated with dubious maintenance costs and vehicle meter data (very large costs values or meters values less than the previous month reading) - potentially caused during the data input process. The time series nature of the data and reliance upon previous month values is sensitive to errors like this and efforts were taken to remove data that seemed spurious. 
+
+The data used for this analysis in its final form can be seen below:
+```{r}
+joined %>%  
+  sample_n(100) %>% 
+  dt_common()
+```
+ 
+# The analysis
+
+This section provides an overview of the analysis that was carried out. A number of plots have been provided to provide insight as to why a link was not able to be found between maintenance cost given the age or mileage of a vehicle. 
+
+The two plots below (tabbed) depict maintenance costs for vehicles by age and meter. Both plots are series box plot graphs which detail the distribution of monthly maintenance cost/miles driven ratio (MMMR) given age/meter bins, respectively. Each depict the an increase of MMMR in the early age/meter range and a plateauing of this value. These plots are more or less the same as age and vehicle mileage meter are highly correlated. The age plot does deviate from the meter plot by demonstrating an increase in variance and instability of MMMR values - this is likely due to a smaller number of vehicles in the higher age range thus being more sustainable to the influence of a few extreme values. 
+
+It is important to highlight what is not seen in either of these plots: an upward increase in MMMR in the later stages of a vehicles operation. Intuitively, an older vehicle may undergo more or more expensive maintenance events resulting in an increase in MMMR. This behavior would be expected to look like hockey stick - a flat trend follows by an inflection point where the MMMR would steadily increase (or potentially a step increase) - but this is not the case. 
+
+*Note:* The red dot is the mean value of MMMR per bin while the flat bar in the box indicates the MMMR median per bin. 
+
+## Aggreagted Cost/Mile Plots {.tabset .tabset-fade .tabset-pills}
+
+### By Age
+```{r}
+plot_overview_age_bin = joined %>%
+  ggplot(aes(age_bin, event_cost_per_meter_per_mnth)) +
+  geom_boxplot() +
+  stat_summary(fun = mean, geom = "point", shape = 20, size = 5, color = "red") +
+  labs(y = "$/Miles Driven", x = "Age Bin", title = "Maintenance Cost/Miles Driven (per month values) per Age Bin") +
+  ylim(0, 1)
+
+plot_overview_age_bin
+# plotly::ggplotly(plot_overview_age_bin)
+```
+
+### By Meter
+```{r}
+plot_overview_meter_bin = joined %>%
+  ggplot(aes(meter_bin, event_cost_per_meter_per_mnth)) +
+  geom_boxplot() +
+  stat_summary(fun = mean, geom = "point", shape = 20, size = 5, color = "red") +
+  labs(y = "$/Miles Driven", x = "Age Bin", title = "Maintenance Cost/Miles Driven (per month values) per Meter Bin") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ylim(0, 1)
+
+plot_overview_meter_bin
+# plotly::ggplotly(plot_overview_meter_bin)
+```
+
+## {-}
+
+The plots above were broken out by mcc/make/model in order to investigate potential hidden MMMR trends saturated by the aggregation of all vehicles into a single plot. The plots below are all density ridge plots depicting the distribution of MMMR values per meter bin for different vehicle attributes - mcc status, manufacturer, model, and make of the vehicle. 
+
+All of these plots show similar behavior as the plots above - no large increase in MMMR in the later operational usage ranges. There is no definitive inflection point that marks an increase in operational cost; at best, some plots depict a slight, constant upward drift of MMMR but this alone does not provide clear indication as to when a vehicle becomes financially burdensome.
+
+```{r}
+joined_ridge = joined %>%
+  .[,
+    .SD[between(event_cost_per_meter_per_mnth,
+            0,
+            quantile(event_cost_per_meter_per_mnth, probs = .75, na.rm = T) + 1.5*IQR(event_cost_per_meter_per_mnth, na.rm = T)
+            )], by = .(meter_bin)] %>%
+  .[event_cost_per_meter_per_mnth<4,] %>% 
+  mutate(log10 = log10(event_cost_per_meter_per_mnth)) %>%
+  filter(log10>-5)
+```
+
+
+```{r fig.width=9}
+joined_ridge  %>%
+  ggplot(aes(log10, meter_bin)) +
+  geom_density_ridges() +
+  coord_flip() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_grid(cols = vars(mcc), scales = "free_x", space = "free")
+```
+
+```{r fig.width=9}
+joined_ridge  %>%
+  ggplot(aes(log10, meter_bin)) +
+  geom_density_ridges() +
+  coord_flip() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_grid(cols = vars(manufacturer), scales = "free_x", space = "free")
+```
+
+```{r fig.width=9}
+joined_ridge  %>%
+  # filter(manufacturer %in% c("CHRYSLER", "FORD", "GM")) %>%
+  group_by(model) %>% 
+  filter(n_distinct(meter_bin)>5) %>% 
+  # filter(max(as.numeric(as.character(meter_bin))) > 1e5) %>% 
+  ungroup() %>% 
+  ggplot(aes(log10, meter_bin)) +
+  geom_density_ridges() +
+  coord_flip() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(vars(model))
+  
+```
+
+```{r fig.width=9}
+joined_ridge  %>%
+  ggplot(aes(log10, meter_bin)) +
+  geom_density_ridges() +
+  coord_flip() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(vars(make))
+```
+
+
+
+# Additional Examination 
+
+The plots below depicts the extreme skewness of total monthly vehicle maintenance costs. Both plots are kernel density plots that depict the distribution of cost events as defined by $1000 increments. The first plot depicts the data as it appears naturally, the second has a log adjustment applied to the x axis. 
+
+Both plots indicate an there are a few extreme cost events prevalent in the data, the second plot shows a normal distribution of costs that is centered ~$1000 - with the bulk of maintenance costs being lower than that. 
+
+## Extreme Skewness in Total Monthly Maintenance Costs {.tabset .tabset-fade .tabset-pills}
+
+### Non-Augmented
+```{r}
+joined %>% 
+  ggplot() + 
+  geom_density(aes(event_cost_mnth_ttl)) 
+```
+
+### Log base 10 Scale
+```{r}
+joined %>% 
+  ggplot() + 
+  geom_density(aes(event_cost_mnth_ttl)) + 
+  scale_x_log10()
+
+```
+
+## {-}
+
+This is relevant in determining if the frequency of **expensive** maintenance events and if there is an increase in said events given the and older operational age (age/meter) of a vehicle. The total monthly maintenance cost for each vehicle was binned into $1000 groupings and the number of these particular groupings were counted given the meter of the vehicle. The plot below depicts the number of maintenance event occurrences (binned by 000's of dollars) given the meter vehicle bin - the y scale has been logged scaled. 
+
+```{r}
+joined_ridge %>%  
+  group_by(meter_bin, cost_bin) %>%
+  count() %>%  
+  ggplot(aes(meter_bin, n, group = cost_bin, color = as.factor(cost_bin))) + 
+  geom_point() +
+  geom_line() + 
+  scale_y_log10() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+
+The above plot restates the assertions made above: 
+
+* Higher monthly total maintenance costs occur much less frequently than **cheaper** monthly totals
+* There are generally less occurrences of maintenance events at all cost levels at lower meter ranges
+  + This seems to be in line with the reasoning that newer vehicles may not require as much work as older vehicles
++ Occurrence of maintenance events rises until about 100,000 miles which is when routine maintenance may increase
++ Occurrence of maintenance events fall for all cost levels in the extreme meter ranges
++ More expensive cost events occur in the middle meter ranges
+
+Again, there is no drastic increase in the number of maintenance events at any cost level and no indication of a point at which a vehicle should be reliably removed from the fleet given the operational costs.
+
+For the sake of completeness, the below plot shows occurrences of maintenance events per meter given the highest mileage vehicle types in the data. each vehicle plot shows roughly the same behavior as the aggregated plot above with a few notable exceptions: 
+
++ The champion and Hoshen seem to have a steady increase in $2000-3000 maintenance events over the course of their life
+  + However, the number of these events are so low they are likely buried by the lower cost events that occur much more frequently
+
+
+```{r}
+joined_ridge %>%  
+  group_by(model) %>% 
+  filter(n_distinct(meter_bin)>10) %>% 
+  group_by(meter_bin, cost_bin, make) %>%  
+  count() %>%  
+  ggplot(aes(meter_bin, n, group = cost_bin, color = as.factor(cost_bin))) + 
+  geom_point() +
+  geom_line() + 
+  facet_wrap(vars(make)) +
+  scale_y_log10() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
