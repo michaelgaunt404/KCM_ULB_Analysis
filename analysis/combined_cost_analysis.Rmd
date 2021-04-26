@@ -1,0 +1,131 @@
+---
+title: "Combined Costs Analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  cache = FALSE, cache.lazy = FALSE, autodep = TRUE, warning = FALSE, 
+  message = FALSE, echo = TRUE, dpi = 180,
+  fig.width = 8, fig.height = 5, echo = FALSE
+  )
+```
+
+```{r include=FALSE}
+#sources local global file
+source(here::here("code/zz_localG.r")) 
+
+#loads the data
+# o_wo = readRDS(here("data/o_wo.rds"))
+# o_wo_agg = readRDS(here("data/o_wo_agg.rds"))
+# udcm = readRDS(here("data/udcm.rds"))
+joined = readRDS(here("data/joined.rds"))
+```
+
+```{r}
+veh_costs = read_excel(
+  here("data/King_County_Metro.Asset_Inventory.2020.xlsx"),
+  sheet = "Rolling stock form_mg",
+  skip = 10) %>%
+  clean_names() %>% 
+  data.table() %>%  
+  .[,`:=`(make_model = make_model %>%  str_to_lower())]
+
+veh_costs_agg = veh_costs %>%  
+  .[,.(ave_cost = mean(replacement_cost, na.rm = T),
+       med_cost = median(replacement_cost, na.rm = T)), by = make_model] %>%  
+  separate(col = "make_model", into = c("make", "model"), sep = "/") %>%  
+  filter(!is.na(model))
+
+working_list = joined %>%
+  .[, .(manufacturer, make, model)] %>%  
+  .[order(manufacturer, model)] %>% 
+  unique() %>%  
+  mutate(across(c('manufacturer', 'make', 'model'), str_to_lower))
+
+# working_list %>% 
+#   .[,lapply(.SD, str_to_lower), .SDcols = c('manufacturer', 'make', 'model')]
+  
+
+```
+
+# Summary 
+
+This analysis attempts to determine the most cost efficient time to remove a vehical from the KCM fleet given vehicle type and maintneance costs.
+
+# The Data
+
+The data used for this analysis consists of the KCM work order data used in the preivous maintance cost analysis and vehical cost data as supplied by NR. The vehical cost data was imperfect data and reuired some cleaning such that it could be combined with he maintance cost data set. The vehical cost data can be seen below:
+
+```{r}
+veh_costs_agg %>%  
+  dt_common()
+```
+
+This table was joined with the KCM work order data, the join was performed on vehical model type. The table below details unique vehcial types and their average and median repalcement costs resulting from the inner join:
+```{r}
+working_list %>%  
+  merge.data.table(veh_costs_agg, by = "model") %>%  
+  dt_common()
+```
+ 
+# The analysis
+
+This analysis generally follows the same process as the previous analysis - replacement and operational costs were aggrgeated (average/meidan) per meter bin per unique model type. Those two metrics were superimposed to determine if there is a consistent point in a vehical's life when it becomes too expensive to maintain, i.e. maintenance costs overcome repalcemnet costs. 
+
+The maintenace and repalcement costs given meter mileage for a number of vehcial tpes can be seen in the plot below. 
+
+Key takeaways: 
+
+* All vehicle types' replacement costs steeply decreases at the lower mileage ranges
+* All vehicle's replacemnet costs deacrease to and stabilze in the .25-.5 cost range 
+  + This is expected as this value is the cost of the vehicle divided by its mileage
+  + Once a vehicle's mileage exveeds the value of it's replacment cost it will be less than 1
+* All vehicle type' maintenace costs drift upward over time 
+* The maintance costs does not appear to drammatically overpower the replament cost of most vehical types
+  + The senator's maintenance costs seems to overcome the repalcmeent costs around 360K miles 
+    -This is about 4X the cost of the vehical
+    -The the combined costs appears to hold constant after this point 
+    -The maintenance costs does not increase at a rate fast enough to drammetically reverse the slope of the combined cost slope (replacement + maintance cost)
+  + The Uplander is the only vehical that exhibits a trough cost behavior
+    -The maintance redirects the combined cost curve and bends it back upward after ~120K miles
+
+```{r fig.width = 12, fig.height = 12}
+joined %>%  
+  mutate(across(c('manufacturer', 'make', 'model'), str_to_lower)) %>% 
+  merge.data.table(veh_costs_agg, by = "model") %>% 
+  .[,`:=`(rep_cost = ave_cost/meter_max_mnth)] %>% 
+  .[,`:=`(comb_cost = rep_cost + event_cost_per_meter_per_mnth)] %>% 
+  pivot_longer(cols = c(rep_cost, event_cost_per_meter_per_mnth)) %>% 
+  ggplot() +
+  geom_boxplot(aes(as.factor(floor_divide(meter_max_mnth, 20000)), value, color = name)) +
+  ylim(0,2) +
+  facet_grid(rows = vars(model), scales = "free_x") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=.5)) + 
+  labs(y = "Combined Cost (replacement + maintenance)", x = "Veh. Meter Bins") 
+```
+
+This plot highlights the costs associated for the Senator vehicle type:
+```{r}
+joined %>%  
+  mutate(across(c('manufacturer', 'make', 'model'), str_to_lower)) %>% 
+  merge.data.table(veh_costs_agg, by = "model") %>% 
+  .[,`:=`(rep_cost = ave_cost/meter_max_mnth)] %>% 
+  .[,`:=`(comb_cost = rep_cost + event_cost_per_meter_per_mnth)] %>% 
+  pivot_longer(cols = c(rep_cost, event_cost_per_meter_per_mnth)) %>% 
+  filter(model == "senator" |
+           model == "uplander") %>% 
+  ggplot() +
+  geom_boxplot(aes(as.factor(floor_divide(meter_max_mnth, 20000)), value, color = name)) +
+  ylim(0,2) +
+  facet_grid(rows = vars(model), scales = "free_x") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=.5), 
+        legend.position = "top") + 
+  labs(y = "Combined Cost (replacement + maintenance)", x = "Veh. Meter Bins") 
+```
+
+# Moving Forward 
+
+This was a quick analysis that was perfromed without fully cleaning the vehical cost dataset. This may have resulted in some vehcile types being unintentially excluded form this analysis. The FA033 dataset provided a list of vheicletypes that was used to check if the the inner join data was missing any vehicle types that should have been included in this analysis. It appears all of the vehicle types designated as a **transit** asset type in the FA033 dataset was properly captured by the inner join operation, some of these items were: Dodge Grand Caravans, Uplander, and the Senator. 
+
+
