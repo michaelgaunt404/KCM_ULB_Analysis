@@ -10,15 +10,13 @@ editor_options:
 
 This is the landing page for the KCM ULB analysis. 
 
-This website contains a number of analysis
+This website contains a number of analysis that have been performed on the KCM data, they can be found below:
 
-Current analysis: 
-
-*[Vehical Maintenance Analysis](ulb_analysis.html)
+* [Vehicle Maintenance Analysis](ulb_analysis.html)
   + Investigates maintenance costs for KCM vehicles give their age and meter mileage
   + Calculates monthly maintenance costs per vehicle type (monthly cost/miles driven)
 
-*[Combined Costs Analysis](combined_cost_analysis.html)
+* [Combined Costs Analysis](combined_cost_analysis.html)
   + Compares vehicle type replacement cost and maintenance costs 
   + Attempts to determine if there is a consist point in a given vehicle type's life cycle where maintenance costs overcome replacement costs
 

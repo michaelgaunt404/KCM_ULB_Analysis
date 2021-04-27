@@ -51,18 +51,18 @@ working_list = joined %>%
 
 # Summary 
 
-This analysis attempts to determine the most cost efficient time to remove a vehical from the KCM fleet given vehicle type and maintneance costs.
+This analysis attempts to determine the most cost efficient time to remove a vehicle from the KCM fleet given vehicle type and maintenance costs.
 
 # The Data
 
-The data used for this analysis consists of the KCM work order data used in the preivous maintance cost analysis and vehical cost data as supplied by NR. The vehical cost data was imperfect data and reuired some cleaning such that it could be combined with he maintance cost data set. The vehical cost data can be seen below:
+The data used for this analysis consists of the KCM work order data used in the previous maintenance cost analysis and vehicle cost data as supplied by NR. The vehicle cost data was imperfect data and retired some cleaning such that it could be combined with he maintenance cost data set. The vehicle cost data can be seen below:
 
 ```{r}
 veh_costs_agg %>%  
   dt_common()
 ```
 
-This table was joined with the KCM work order data, the join was performed on vehical model type. The table below details unique vehcial types and their average and median repalcement costs resulting from the inner join:
+This table was joined with the KCM work order data, the join was performed on vehicle model type. The table below details unique vehicle types and their average and median replacement costs resulting from the inner join:
 ```{r}
 working_list %>%  
   merge.data.table(veh_costs_agg, by = "model") %>%  
@@ -71,24 +71,24 @@ working_list %>%
  
 # The analysis
 
-This analysis generally follows the same process as the previous analysis - replacement and operational costs were aggrgeated (average/meidan) per meter bin per unique model type. Those two metrics were superimposed to determine if there is a consistent point in a vehical's life when it becomes too expensive to maintain, i.e. maintenance costs overcome repalcemnet costs. 
+This analysis generally follows the same process as the previous analysis - replacement and operational costs were aggregated (average/median) per meter bin per unique model type. Those two metrics were superimposed to determine if there is a consistent point in a vehicle's life when it becomes too expensive to maintain, i.e. maintenance costs overcome replacement  costs. 
 
-The maintenace and repalcement costs given meter mileage for a number of vehcial tpes can be seen in the plot below. 
+The maintenance and replacement costs given meter mileage for a number of vehicle types can be seen in the plot below. 
 
 Key takeaways: 
 
 * All vehicle types' replacement costs steeply decreases at the lower mileage ranges
-* All vehicle's replacemnet costs deacrease to and stabilze in the .25-.5 cost range 
+* All vehicle's replacement costs decrease to and stabilize in the .25-.5 cost range 
   + This is expected as this value is the cost of the vehicle divided by its mileage
-  + Once a vehicle's mileage exveeds the value of it's replacment cost it will be less than 1
-* All vehicle type' maintenace costs drift upward over time 
-* The maintance costs does not appear to drammatically overpower the replament cost of most vehical types
-  + The senator's maintenance costs seems to overcome the repalcmeent costs around 360K miles 
-    -This is about 4X the cost of the vehical
+  + Once a vehicle's mileage exceeds the value of it's replacement cost it will be less than 1
+* All vehicle type' maintenance costs drift upward over time 
+* The maintenance costs does not appear to dramatically overpower the replacement cost of most vehicle types
+  + The senator's maintenance costs seems to overcome the replacment costs around 360K miles 
+    -This is about 4X the cost of the vehicle
     -The the combined costs appears to hold constant after this point 
-    -The maintenance costs does not increase at a rate fast enough to drammetically reverse the slope of the combined cost slope (replacement + maintance cost)
-  + The Uplander is the only vehical that exhibits a trough cost behavior
-    -The maintance redirects the combined cost curve and bends it back upward after ~120K miles
+    -The maintenance costs does not increase at a rate fast enough to dramatically reverse the slope of the combined cost slope (replacement + maintenance cost)
+  + The Uplander is the only vehicle that exhibits a trough cost behavior
+    -The maintenance redirects the combined cost curve and bends it back upward after ~120K miles
 
 ```{r fig.width = 12, fig.height = 12}
 joined %>%  
@@ -126,6 +126,6 @@ joined %>%
 
 # Moving Forward 
 
-This was a quick analysis that was perfromed without fully cleaning the vehical cost dataset. This may have resulted in some vehcile types being unintentially excluded form this analysis. The FA033 dataset provided a list of vheicletypes that was used to check if the the inner join data was missing any vehicle types that should have been included in this analysis. It appears all of the vehicle types designated as a **transit** asset type in the FA033 dataset was properly captured by the inner join operation, some of these items were: Dodge Grand Caravans, Uplander, and the Senator. 
+This was a quick analysis that was performed without fully cleaning the vehicle cost data set. This may have resulted in some vehicle types being unintentionally excluded form this analysis. The FA033 data set provided a list of vehicle types that was used to check if the the inner join data was missing any vehicle types that should have been included in this analysis. It appears all of the vehicle types designated as a **transit** asset type in the FA033 data set was properly captured by the inner join operation, some of these items were: Dodge Grand Caravans, Uplander, and the Senator. 
 
 

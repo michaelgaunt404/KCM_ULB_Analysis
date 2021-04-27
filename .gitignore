@@ -9,3 +9,14 @@ analysis/*png
 analysis/*html
 analysis/*_cache
 analysis/site_libs
+analysis/figure
+
+
+#folders~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#example: name/ -> gets rid of folders with this name
+#example: name/** -> gets rid of all files in folder
+cache/
+data/
+data/**
+
+
