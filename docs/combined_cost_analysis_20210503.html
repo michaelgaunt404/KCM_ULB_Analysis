@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Combined Costs Analysis</title>
+
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.17/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="site_libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="site_libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">KCM_ULB_Anlysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis">
+    <span class="fas fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Combined Costs Analysis</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-05-05
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>KCM_ULB_Anlysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210318code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210318)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210318code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210318)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommichaelgaunt404KCMULBAnlysistree0f0d1fd6e50ce67cca21d47322a3af2ea0e458a7targetblank0f0d1fda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis/tree/0f0d1fd6e50ce67cca21d47322a3af2ea0e458a7" target="_blank">0f0d1fd</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcommichaelgaunt404KCMULBAnlysistree0f0d1fd6e50ce67cca21d47322a3af2ea0e458a7targetblank0f0d1fda" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis/tree/0f0d1fd6e50ce67cca21d47322a3af2ea0e458a7" target="_blank">0f0d1fd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    code/.Rhistory
+
+Untracked files:
+    Untracked:  analysis/combined_cost_analysis_20210426.Rmd
+    Untracked:  analysis/spurious_data.Rmd
+    Untracked:  code/data_analysis.R
+    Untracked:  code/data_import.R
+    Untracked:  code/general_development.R
+    Untracked:  code/utils_helpers_general.R
+    Untracked:  code/utils_script_specific.R
+    Untracked:  code/zz_emptyScriptTemplate.R
+    Untracked:  code/zz_emptyScriptTemplate_CODE.R
+    Untracked:  code/zz_emptyScriptTemplate_UTILS.R
+    Untracked:  code/zz_localG.R
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/combined_cost_analysis_20210503.Rmd</code>) and HTML (<code>docs/combined_cost_analysis_20210503.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis/blob/0f0d1fd6e50ce67cca21d47322a3af2ea0e458a7/analysis/combined_cost_analysis_20210503.Rmd" target="_blank">0f0d1fd</a>
+</td>
+<td>
+michaelgaunt404
+</td>
+<td>
+2021-05-05
+</td>
+<td>
+wflow_publish(c(“./analysis/combined_cost_analysis_20210503.rmd”))
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>This analysis attempts to determine the most cost efficient time to remove a vehicle from the KCM fleet given vehicle type and maintenance costs.</p>
+<p>20210503 Changes: Data was manually edited in both the joined and vehicle cost datasets. More specificlaly, vehicle manufacture/make/model informating were edited to be consistent acorss both data sets, in turn, increasing the number and quality of merges between both data sets on said values.</p>
+<p>Performing this process resulted in more data included in the combiuned cost analysis due to the decrease in failed merges which had been produced from spurious typos in the merged data fields.</p>
+</div>
+<div id="the-data" class="section level1">
+<h1>The Data</h1>
+<p>The data used for this analysis consists of the KCM work order data used in the previous maintenance cost analysis and vehicle cost data as supplied by NR. The vehicle cost data was imperfect data and required some cleaning such that it could be combined with he maintenance cost data set. The vehicle cost data can be seen below:</p>
+<div id="htmlwidget-61ec78349d48142b500e" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-61ec78349d48142b500e">{"x":{"filter":"none","extensions":["Buttons"],"fillContainer":true,"data":[["amerivan","arboc","arboc","arboc","batterybus ","braun","chevrolet","chevrolet","chevrolet","cheverlot","cheverlot","cheverlot","chrysler","dodge","dodge","ford","ford","ford","ford","ford","frht","gillig ","gillig ","goshen","goshen","mobility ventures","new flyer ","new flyer ","new flyer ","new flyer ","new flyer ","new flyer ","nissan","orion ","supreme","startrans","supreme","xcelsior ","xcelsior ","xcelsior "],["uplander","spirit of liberty","spirit of freedom","spirit of mobility"," be40","entervan","astro","express","uplander","spirit of mobility","express","uplander","pacifica hybrid","grand caravan","journey","star trans candidate ii transit ford 350","econoline","spirit of independence","transit","transit connect","spirit of liberty"," c18a096n4"," lowfloorbus","gc ii","pacer ii","mv1"," d40lf"," de60lf"," de60lfa"," xde60"," xt40eb"," xt60eb","leaf"," orion vii","senator","senator ii","candidate"," xde35"," xde40"," xde60"],[34525,159044,128500,125000,797820,38711.6407407407,23500,26635,23500,162222.222222222,35091.4870466321,25920,44807,26492.0196779964,26990,110000,23500,208928.571428571,32706.8888888889,25683,240000,502249,719804,81873.7414965986,59300,47581,552141.50175,1060154.87786267,1069421.23922013,925311.623529412,892960,1275393,30945,650106.099225,89765.7142857143,81651.0316363636,59300,582652,584591,920666.891891892],[38200,110000,128500,125000,797820,38448.66,23500,26635,23500,110000,34069,25920,44807,25920,26990,110000,23500,140000,33306,25683,315000,502249,719804,73822,59300,47581,552141.50175,1061043.006375,1059262,920733,892960,1275393,30945,650106.099225,85822,79712,59300,582652,584591,913575]],"container":"<table class=\"display fill-container\">\n  <thead>\n    <tr>\n      <th>Make<\/th>\n      <th>Model<\/th>\n      <th>Ave Cost<\/th>\n      <th>Med Cost<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollY":null,"dom":"Blftipr","buttons":["copy","csv"],"initComplete":"function(settings, json) {\n$('body').css({'font-family': 'Calibri'});\n}","columnDefs":[{"className":"dt-right","targets":[2,3]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.initComplete"],"jsHooks":[]}</script>
+<p>This table was joined with the KCM work order data, the join was performed on vehicle model type. The table below details unique vehicle types and their average and median replacement costs resulting from the inner join:</p>
+<div id="htmlwidget-3c3cb4776d35df16ae88" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3c3cb4776d35df16ae88">{"x":{"filter":"none","extensions":["Buttons"],"fillContainer":true,"data":[["astro","candidate","entervan","express","gc ii","gc ii","grand caravan","pacer ii","senator","senator","senator ii","uplander","uplander"],["chevrolet","supreme","braun","chevrolet","goshen","goshen","dodge","goshen","supreme","supreme","startrans","amerivan","chevrolet"],["gm","ford","chrysler","gm","ford","gm","chrysler","ford","ford","gm","ford","gm","gm"],[23500,59300,38711.6407407407,26635,81873.7414965986,81873.7414965986,26492.0196779964,59300,89765.7142857143,89765.7142857143,81651.0316363636,34525,23500],[23500,59300,38448.66,26635,73822,73822,25920,59300,85822,85822,79712,38200,23500]],"container":"<table class=\"display fill-container\">\n  <thead>\n    <tr>\n      <th>Model<\/th>\n      <th>Make<\/th>\n      <th>Manufacturer<\/th>\n      <th>Ave Cost<\/th>\n      <th>Med Cost<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollY":null,"dom":"Blftipr","buttons":["copy","csv"],"initComplete":"function(settings, json) {\n$('body').css({'font-family': 'Calibri'});\n}","columnDefs":[{"className":"dt-right","targets":[3,4]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.initComplete"],"jsHooks":[]}</script>
+</div>
+<div id="the-analysis" class="section level1">
+<h1>The analysis</h1>
+<p>For this analysis, replacement and operational costs were aggregated (average/median) per meter bin per unique model type. Those two metrics were superimposed to determine if there is a consistent point in a vehicle’s life when it becomes too expensive to maintain, i.e. maintenance costs overcome replacement costs.</p>
+<p>The maintenance and replacement costs given meter mileage for a number of vehicle types can be seen in the plot below.</p>
+<p><img src="figure/combined_cost_analysis_20210503.Rmd/unnamed-chunk-5-1.png" width="2160" style="display: block; margin: auto;" /></p>
+<p>Key takeaways (2021-05-05):</p>
+<ul>
+<li>Key takeways from the initial iteration of this analysis still stand
+<ul>
+<li>Both replacement and maintenacne costs either become asymptotic or slowly dirft downward or upwards, respectively</li>
+<li>No definitive trough behaviopur seen in combined cost values
+<ul>
+<li>Initial assumption: combined costs would bend upwards at some point given pressure from increasing maintenace costs</li>
+</ul></li>
+<li>Vehicles do exhibit an increase in combined cost at extreme ranges
+<ul>
+<li>Likely, due to a small number of maintance events at these range bins</li>
+</ul></li>
+<li>A few vehicles show a slight but noticable increase in comvined costs
+<ul>
+<li>Uplander ~ 150K</li>
+<li>Entervan ~ 150K</li>
+<li>Express ~ 150K</li>
+<li>GC 2 ~ 225K</li>
+</ul></li>
+</ul></li>
+</ul>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre><code>R version 3.6.2 (2019-12-12)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 17134)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] ggridges_0.5.3       here_1.0.1           data.validator_0.1.5
+ [4] skimr_2.1.2          DT_0.17              lubridate_1.7.9.2   
+ [7] data.table_1.13.2    janitor_2.1.0        readxl_1.3.1        
+[10] magrittr_2.0.1       forcats_0.5.1        stringr_1.4.0       
+[13] dplyr_1.0.4          purrr_0.3.4          readr_1.4.0         
+[16] tidyr_1.1.3          tibble_3.1.0         ggplot2_3.3.3       
+[19] tidyverse_1.3.0      workflowr_1.6.2     
+
+loaded via a namespace (and not attached):
+ [1] httr_1.4.2        sass_0.3.1        jsonlite_1.7.2    modelr_0.1.8     
+ [5] bslib_0.2.4       assertthat_0.2.1  highr_0.8         cellranger_1.1.0 
+ [9] yaml_2.2.1        pillar_1.6.0      backports_1.2.1   glue_1.4.2       
+[13] digest_0.6.27     promises_1.1.1    rvest_0.3.6       snakecase_0.11.0 
+[17] colorspace_2.0-0  htmltools_0.5.1.1 httpuv_1.5.4      plyr_1.8.6       
+[21] pkgconfig_2.0.3   broom_0.7.5       haven_2.3.1       scales_1.1.1     
+[25] whisker_0.4       later_1.1.0.1     git2r_0.28.0      farver_2.0.3     
+[29] generics_0.1.0    ellipsis_0.3.1    withr_2.4.1       repr_1.1.3       
+[33] cli_2.3.1         crayon_1.4.1      evaluate_0.14     ps_1.3.2         
+[37] fs_1.5.0          fansi_0.4.2       xml2_1.3.2        tools_3.6.2      
+[41] hms_1.0.0         lifecycle_1.0.0   munsell_0.5.0     reprex_1.0.0     
+[45] compiler_3.6.2    jquerylib_0.1.3   rlang_0.4.10      grid_3.6.2       
+[49] rstudioapi_0.13   htmlwidgets_1.5.3 crosstalk_1.1.1   base64enc_0.1-3  
+[53] labeling_0.4.2    rmarkdown_2.7     gtable_0.3.0      DBI_1.1.1        
+[57] R6_2.5.0          knitr_1.31        utf8_1.1.4        rprojroot_2.0.2  
+[61] stringi_1.5.3     Rcpp_1.0.6        vctrs_0.3.6       dbplyr_2.1.0     
+[65] tidyselect_1.1.0  xfun_0.19        </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
