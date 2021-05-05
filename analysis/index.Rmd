@@ -16,7 +16,12 @@ This website contains a number of analysis that have been performed on the KCM d
   + Investigates maintenance costs for KCM vehicles give their age and meter mileage
   + Calculates monthly maintenance costs per vehicle type (monthly cost/miles driven)
 
-* [Combined Costs Analysis](combined_cost_analysis.html)
+* Combined Costs Analysis
   + Compares vehicle type replacement cost and maintenance costs 
   + Attempts to determine if there is a consist point in a given vehicle type's life cycle where maintenance costs overcome replacement costs
+  + [Combined Costs Analysis_20210426](combined_cost_analysis_20210426.html)
+    - Intitial Analysis
+  + [Combined Costs Analysis_20210505](combined_cost_analysis_20210503.html)
+    - Manual changes to data to make merges on vehicle types better
+  
 
