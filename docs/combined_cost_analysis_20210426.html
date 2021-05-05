@@ -528,7 +528,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/combined_cost_analysis_20210503.Rmd</code>) and HTML (<code>docs/combined_cost_analysis_20210503.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/combined_cost_analysis_20210426.Rmd</code>) and HTML (<code>docs/combined_cost_analysis_20210426.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -554,27 +554,10 @@ Message
 <tbody>
 <tr>
 <td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/michaelgaunt404/KCM_ULB_Anlysis/2563b782400d057600eaeb3c3f75f2c97eba7edd/docs/combined_cost_analysis_20210503.html" target="_blank">2563b78</a>
-</td>
-<td>
-michaelgaunt404
-</td>
-<td>
-2021-05-05
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
 Rmd
 </td>
 <td>
-<a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis/blob/0f0d1fd6e50ce67cca21d47322a3af2ea0e458a7/analysis/combined_cost_analysis_20210503.Rmd" target="_blank">0f0d1fd</a>
+<a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis/blob/e5a7e44dce69d224e6f4a0805f7c586aa6308df0/analysis/combined_cost_analysis_20210426.Rmd" target="_blank">e5a7e44</a>
 </td>
 <td>
 michaelgaunt404
@@ -583,7 +566,7 @@ michaelgaunt404
 2021-05-05
 </td>
 <td>
-wflow_publish(c(“./analysis/combined_cost_analysis_20210503.rmd”))
+wflow_publish(c(“./analysis/combined_cost_analysis_20210503.rmd”,
 </td>
 </tr>
 </tbody>
@@ -596,45 +579,41 @@ wflow_publish(c(“./analysis/combined_cost_analysis_20210503.rmd”))
 <div id="summary" class="section level1">
 <h1>Summary</h1>
 <p>This analysis attempts to determine the most cost efficient time to remove a vehicle from the KCM fleet given vehicle type and maintenance costs.</p>
-<p>20210503 Changes: Data was manually edited in both the joined and vehicle cost datasets. More specificlaly, vehicle manufacture/make/model informating were edited to be consistent acorss both data sets, in turn, increasing the number and quality of merges between both data sets on said values.</p>
-<p>Performing this process resulted in more data included in the combiuned cost analysis due to the decrease in failed merges which had been produced from spurious typos in the merged data fields.</p>
 </div>
 <div id="the-data" class="section level1">
 <h1>The Data</h1>
-<p>The data used for this analysis consists of the KCM work order data used in the previous maintenance cost analysis and vehicle cost data as supplied by NR. The vehicle cost data was imperfect data and required some cleaning such that it could be combined with he maintenance cost data set. The vehicle cost data can be seen below:</p>
+<p>The data used for this analysis consists of the KCM work order data used in the previous maintenance cost analysis and vehicle cost data as supplied by NR. The vehicle cost data was imperfect data and retired some cleaning such that it could be combined with he maintenance cost data set. The vehicle cost data can be seen below:</p>
 <div id="htmlwidget-61ec78349d48142b500e" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-61ec78349d48142b500e">{"x":{"filter":"none","extensions":["Buttons"],"fillContainer":true,"data":[["amerivan","arboc","arboc","arboc","batterybus ","braun","chevrolet","chevrolet","chevrolet","cheverlot","cheverlot","cheverlot","chrysler","dodge","dodge","ford","ford","ford","ford","ford","frht","gillig ","gillig ","goshen","goshen","mobility ventures","new flyer ","new flyer ","new flyer ","new flyer ","new flyer ","new flyer ","nissan","orion ","supreme","startrans","supreme","xcelsior ","xcelsior ","xcelsior "],["uplander","spirit of liberty","spirit of freedom","spirit of mobility"," be40","entervan","astro","express","uplander","spirit of mobility","express","uplander","pacifica hybrid","grand caravan","journey","star trans candidate ii transit ford 350","econoline","spirit of independence","transit","transit connect","spirit of liberty"," c18a096n4"," lowfloorbus","gc ii","pacer ii","mv1"," d40lf"," de60lf"," de60lfa"," xde60"," xt40eb"," xt60eb","leaf"," orion vii","senator","senator ii","candidate"," xde35"," xde40"," xde60"],[34525,159044,128500,125000,797820,38711.6407407407,23500,26635,23500,162222.222222222,35091.4870466321,25920,44807,26492.0196779964,26990,110000,23500,208928.571428571,32706.8888888889,25683,240000,502249,719804,81873.7414965986,59300,47581,552141.50175,1060154.87786267,1069421.23922013,925311.623529412,892960,1275393,30945,650106.099225,89765.7142857143,81651.0316363636,59300,582652,584591,920666.891891892],[38200,110000,128500,125000,797820,38448.66,23500,26635,23500,110000,34069,25920,44807,25920,26990,110000,23500,140000,33306,25683,315000,502249,719804,73822,59300,47581,552141.50175,1061043.006375,1059262,920733,892960,1275393,30945,650106.099225,85822,79712,59300,582652,584591,913575]],"container":"<table class=\"display fill-container\">\n  <thead>\n    <tr>\n      <th>Make<\/th>\n      <th>Model<\/th>\n      <th>Ave Cost<\/th>\n      <th>Med Cost<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollY":null,"dom":"Blftipr","buttons":["copy","csv"],"initComplete":"function(settings, json) {\n$('body').css({'font-family': 'Calibri'});\n}","columnDefs":[{"className":"dt-right","targets":[2,3]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.initComplete"],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-61ec78349d48142b500e">{"x":{"filter":"none","extensions":["Buttons"],"fillContainer":true,"data":[["amerivan","arboc","arboc","arboc","batterybus ","braun","chevrolet","chevrolet","chevrolet","cheverlot","cheverlot","cheverlot","chrysler","dodge","dodge","ford","ford","ford","ford","ford","gillig ","gillig ","goshen","goshen","mobility ventures","new flyer ","new flyer ","new flyer ","new flyer ","new flyer ","new flyer ","orion ","startrans","supreme","supreme","xcelsior ","xcelsior ","xcelsior "],["uplander","spirit of liberty","spirit of freedom","spirit of mobility"," be40","entervan","astro","express","uplander","spirit of mobility","express","uplander","pacifica hybrid","g caravan","journey","star trans candidate ii transit ford 350","econoline","spirit of independence","transit","transit connect"," c18a096n4"," lowfloorbus","gc ii","pacer ii","mv1"," d40lf"," de60lf"," de60lfa"," xde60"," xt40eb"," xt60eb"," orion vii","senator ii","candidate","senator"," xde35"," xde40"," xde60"],[34525,159044,128500,125000,797820,38711.6407407407,23500,26635,23500,162222.222222222,35091.4870466321,25920,44807,26492.0196779964,26990,110000,23500,208928.571428571,32706.8888888889,25683,502249,719804,81873.7414965986,59300,47581,552141.50175,1060154.87786267,1069421.23922013,925311.623529412,892960,1275393,650106.099225,82081.7536945813,59300,91126.4114285714,582652,584591,920666.891891892],[38200,110000,128500,125000,797820,38448.66,23500,26635,23500,110000,34069,25920,44807,25920,26990,110000,23500,140000,33306,25683,502249,719804,73822,59300,47581,552141.50175,1061043.006375,1059262,920733,892960,1275393,650106.099225,79712,59300,85822,582652,584591,913575]],"container":"<table class=\"display fill-container\">\n  <thead>\n    <tr>\n      <th>Make<\/th>\n      <th>Model<\/th>\n      <th>Ave Cost<\/th>\n      <th>Med Cost<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollY":null,"dom":"Blftipr","buttons":["copy","csv"],"initComplete":"function(settings, json) {\n$('body').css({'font-family': 'Calibri'});\n}","columnDefs":[{"className":"dt-right","targets":[2,3]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.initComplete"],"jsHooks":[]}</script>
 <p>This table was joined with the KCM work order data, the join was performed on vehicle model type. The table below details unique vehicle types and their average and median replacement costs resulting from the inner join:</p>
 <div id="htmlwidget-3c3cb4776d35df16ae88" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3c3cb4776d35df16ae88">{"x":{"filter":"none","extensions":["Buttons"],"fillContainer":true,"data":[["astro","candidate","entervan","express","gc ii","gc ii","grand caravan","pacer ii","senator","senator","senator ii","uplander","uplander"],["chevrolet","supreme","braun","chevrolet","goshen","goshen","dodge","goshen","supreme","supreme","startrans","amerivan","chevrolet"],["gm","ford","chrysler","gm","ford","gm","chrysler","ford","ford","gm","ford","gm","gm"],[23500,59300,38711.6407407407,26635,81873.7414965986,81873.7414965986,26492.0196779964,59300,89765.7142857143,89765.7142857143,81651.0316363636,34525,23500],[23500,59300,38448.66,26635,73822,73822,25920,59300,85822,85822,79712,38200,23500]],"container":"<table class=\"display fill-container\">\n  <thead>\n    <tr>\n      <th>Model<\/th>\n      <th>Make<\/th>\n      <th>Manufacturer<\/th>\n      <th>Ave Cost<\/th>\n      <th>Med Cost<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollY":null,"dom":"Blftipr","buttons":["copy","csv"],"initComplete":"function(settings, json) {\n$('body').css({'font-family': 'Calibri'});\n}","columnDefs":[{"className":"dt-right","targets":[3,4]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.initComplete"],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-3c3cb4776d35df16ae88">{"x":{"filter":"none","extensions":["Buttons"],"fillContainer":true,"data":[["astro","candidate","entervan","express","express","gc ii","pacer ii","senator","senator","senator ii","uplander","uplander","uplander","uplander","uplander","uplander"],["gm","ford","chrysler","gm","gm","ford","ford","ford","gm","ford","gm","gm","gm","gm","gm","gm"],["chevrolet","supreme","braun","chevrolet","chevrolet","goshen","goshen","supreme","supreme","startrans","amerivan","amerivan","amerivan","chevrolet","chevrolet","chevrolet"],["chevrolet","supreme","braun","chevrolet","cheverlot","goshen","goshen","supreme","supreme","startrans","amerivan","chevrolet","cheverlot","amerivan","chevrolet","cheverlot"],[23500,59300,38711.6407407407,26635,35091.4870466321,81873.7414965986,59300,91126.4114285714,91126.4114285714,82081.7536945813,34525,23500,25920,34525,23500,25920],[23500,59300,38448.66,26635,34069,73822,59300,85822,85822,79712,38200,23500,25920,38200,23500,25920]],"container":"<table class=\"display fill-container\">\n  <thead>\n    <tr>\n      <th>Model<\/th>\n      <th>Manufacturer<\/th>\n      <th>Make.x<\/th>\n      <th>Make.y<\/th>\n      <th>Ave Cost<\/th>\n      <th>Med Cost<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollY":null,"dom":"Blftipr","buttons":["copy","csv"],"initComplete":"function(settings, json) {\n$('body').css({'font-family': 'Calibri'});\n}","columnDefs":[{"className":"dt-right","targets":[4,5]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.initComplete"],"jsHooks":[]}</script>
 </div>
 <div id="the-analysis" class="section level1">
 <h1>The analysis</h1>
-<p>For this analysis, replacement and operational costs were aggregated (average/median) per meter bin per unique model type. Those two metrics were superimposed to determine if there is a consistent point in a vehicle’s life when it becomes too expensive to maintain, i.e. maintenance costs overcome replacement costs.</p>
+<p>This analysis generally follows the same process as the previous analysis - replacement and operational costs were aggregated (average/median) per meter bin per unique model type. Those two metrics were superimposed to determine if there is a consistent point in a vehicle’s life when it becomes too expensive to maintain, i.e. maintenance costs overcome replacement costs.</p>
 <p>The maintenance and replacement costs given meter mileage for a number of vehicle types can be seen in the plot below.</p>
-<p><img src="figure/combined_cost_analysis_20210503.Rmd/unnamed-chunk-5-1.png" width="2160" style="display: block; margin: auto;" /></p>
-<p>Key takeaways (2021-05-05):</p>
+<p>Key takeaways:</p>
 <ul>
-<li>Key takeways from the initial iteration of this analysis still stand
+<li>All vehicle types’ replacement costs steeply decreases at the lower mileage ranges</li>
+<li>All vehicle’s replacement costs decrease to and stabilize in the .25-.5 cost range
 <ul>
-<li>Both replacement and maintenacne costs either become asymptotic or slowly dirft downward or upwards, respectively</li>
-<li>No definitive trough behaviopur seen in combined cost values
-<ul>
-<li>Initial assumption: combined costs would bend upwards at some point given pressure from increasing maintenace costs</li>
+<li>This is expected as this value is the cost of the vehicle divided by its mileage</li>
+<li>Once a vehicle’s mileage exceeds the value of it’s replacement cost it will be less than 1</li>
 </ul></li>
-<li>Vehicles do exhibit an increase in combined cost at extreme ranges
+<li>All vehicle type’ maintenance costs drift upward over time</li>
+<li>The maintenance costs does not appear to dramatically overpower the replacement cost of most vehicle types
 <ul>
-<li>Likely, due to a small number of maintance events at these range bins</li>
-</ul></li>
-<li>A few vehicles show a slight but noticable increase in comvined costs
-<ul>
-<li>Uplander ~ 150K</li>
-<li>Entervan ~ 150K</li>
-<li>Express ~ 150K</li>
-<li>GC 2 ~ 225K</li>
-</ul></li>
+<li>The senator’s maintenance costs seems to overcome the replacment costs around 360K miles -This is about 4X the cost of the vehicle -The the combined costs appears to hold constant after this point -The maintenance costs does not increase at a rate fast enough to dramatically reverse the slope of the combined cost slope (replacement + maintenance cost)</li>
+<li>The Uplander is the only vehicle that exhibits a trough cost behavior -The maintenance redirects the combined cost curve and bends it back upward after ~120K miles</li>
 </ul></li>
 </ul>
+<p><img src="figure/combined_cost_analysis_20210426.Rmd/unnamed-chunk-5-1.png" width="2160" style="display: block; margin: auto;" /></p>
+<p>This plot highlights the costs associated for the Senator vehicle type: <img src="figure/combined_cost_analysis_20210426.Rmd/unnamed-chunk-6-1.png" width="1440" style="display: block; margin: auto;" /></p>
+</div>
+<div id="moving-forward" class="section level1">
+<h1>Moving Forward</h1>
+<p>This was a quick analysis that was performed without fully cleaning the vehicle cost data set. This may have resulted in some vehicle types being unintentionally excluded form this analysis. The FA033 data set provided a list of vehicle types that was used to check if the the inner join data was missing any vehicle types that should have been included in this analysis. It appears all of the vehicle types designated as a <strong>transit</strong> asset type in the FA033 data set was properly captured by the inner join operation, some of these items were: Dodge Grand Caravans, Uplander, and the Senator.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
