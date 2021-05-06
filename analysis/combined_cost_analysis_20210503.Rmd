@@ -122,7 +122,23 @@ data2 %>%
   theme(legend.position="top")
 ```
 
-Key takeaways (`r Sys.Date()`): 
+```{r fig.width = 12, fig.height = 12}
+data2 %>% 
+  ggplot() +
+  coord_cartesian(ylim=c(0, 2)) +
+  geom_point(aes(meter_bin, value, color = name)) +
+  geom_line(aes(meter_bin, value, color = name))  +
+  facet_grid(rows = vars(`Make/Model`), scales = "free_x") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=.5)) + 
+  labs(y = "Costs per Unit of Operating Time", 
+       x = "Vehicle Mileage (20K mile bins)", 
+       color = "Cost Types", 
+       title = "Median Vehicle Operation Costs per Unit of Operation Time",
+       caption = "Vertical plot range limited [0, 2] and outliers omitted for visual clarity." ) + 
+  theme(legend.position="top")
+```
+
+Key takeaways (20210504): 
 
 * Key takeways from the initial iteration of this analysis still stand
   + Both replacement and maintenacne costs either become asymptotic or slowly dirft downward or upwards, respectively 

@@ -10,7 +10,7 @@ editor_options:
 
 This is the landing page for the KCM ULB analysis. 
 
-This website contains a number of analysis that have been performed on the KCM data, they can be found below:
+This website contains a number of analyses that have been performed on the KCM data, they can be found below:
 
 * [Vehicle Maintenance Analysis](ulb_analysis.html)
   + Investigates maintenance costs for KCM vehicles give their age and meter mileage
@@ -22,6 +22,7 @@ This website contains a number of analysis that have been performed on the KCM d
   + [Combined Costs Analysis_20210426](combined_cost_analysis_20210426.html)
     - Intitial Analysis
   + [Combined Costs Analysis_20210505](combined_cost_analysis_20210503.html)
-    - Manual changes to data to make merges on vehicle types better
+    - Manual changes to data to increase the quality and quantity of merge operations using vehicle types 
   
+
 

@@ -1,0 +1,84 @@
+---
+title: "Spurious Data Entires"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  cache = FALSE, cache.lazy = FALSE, autodep = TRUE, warning = FALSE, 
+  message = FALSE, echo = TRUE, dpi = 180,
+  fig.width = 8, fig.height = 5
+  )
+```
+
+```{r include=FALSE}
+#sources local global file
+source(here::here("code/zz_localG.R")) 
+
+#loads the data
+o_wo = readRDS(here("data/o_wo.rds"))
+o_wo_agg = readRDS(here("data/o_wo_agg.rds"))
+udcm = readRDS(here("data/udcm.rds"))
+joined = readRDS(here("data/joined.rds"))
+```
+
+## Data Issues
+
+This section was developed to highlight potential issues with the data used for the KCM ULB Analysis. 
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+The below table is a detailed glance at the work order dataset. It depicts summary statisitics of numeric values found in or built from the original work order dataset. There are three points 
+
+* The *P0* value for row 10, *meter_diff_mnth*, is ngative 
+  + This should never be the case as that variable measures the month-to-month increase of each vehicles meter mileage - no meter can decrease with repsect to the previous month meter value
+  + It appears that this issue is caused by erroneous data recording
+* The *P100* values for rows 4-8, *cost tracking variables*, are all extrememly large comparaed to the rest of the individual metric distributions
+  + While a fluid related maintenace cost ,*act_fluid_cost_do*, could potentially cost $558k, this value seems spurious given the rest of the data
+
+```{r steup, include=FALSE}
+o_wo_skimmed = o_wo %>%  
+  skim()
+
+o_wo_skimmed %>%  
+  yank("numeric") %>%  
+  dt_common()
+```
+
+The plot below is an example of the former point listed above regarding negative monthly meter difference values. Unit 577 shows a massive dip in montly cummlative meter mileage in early 2010 (bottom plot). The top plot depicts the monthly meter difference - the dip in the bottom plot is depicted as a dip and spike in the difference plot. A singular incorrect point in the cummlative vehcile miles plot manifests itself a two massivie monhtly deviations - this is not optimal as monthly meter difference is integral in calculating a vehicle's operational cost (maintenance cost per miles driven per month). 
+```{r}
+bad_mileage = o_wo %>%  
+  pivot_longer(cols = c(meter_sans0, meter_diff_mnth)) %>%
+  group_by(name) %>% 
+  mutate(anomaly = case_when(abs(value-lag(value))>10000~"True", 
+                             T~"False"),
+         name = fct_relevel(name, "meter_diff_mnth", "meter_sans0")) %>% 
+  filter(unit_id == 577) %>%  
+  ggplot(aes(fisc_pd_corr, value)) + 
+  geom_line() + 
+  facet_grid(rows = vars(name), scales = 'free_y', 
+             labeller = as_labeller(
+               c(
+                 `meter_sans0` = "Vehicle Meter",
+                 `meter_diff_mnth` = "Monthly Meter Diff"
+               ))) +
+  scale_x_date(date_labels = "%Y", date_breaks = "1 year") +
+  labs(y = "Value", x = "Year", title = "Example of Poor Meter Data Quality")
+
+bad_mileage
+```
+
+```{r}
+o_wo_agg 
+
+joined %>%
+  ggplot(aes(age_bin, event_cost_per_meter_per_mnth)) +
+  geom_boxplot() +
+  stat_summary(fun = mean, geom = "point", shape = 20, size = 10, color = "red") +
+  # facet_grid(cols = vars(mcc), scales = "free") +
+  ylim(0, 1)
+
+```
+
+
