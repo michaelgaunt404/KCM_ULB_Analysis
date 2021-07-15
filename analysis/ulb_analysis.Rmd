@@ -64,13 +64,29 @@ plot_overview_age_bin
 ```
 
 ### By Meter
-```{r}
+```{r }
 plot_overview_meter_bin = joined %>%
   ggplot(aes(meter_bin, event_cost_per_meter_per_mnth)) +
   geom_boxplot() +
   stat_summary(fun = mean, geom = "point", shape = 20, size = 5, color = "red") +
   labs(y = "$/Miles Driven", x = "Age Bin", title = "Maintenance Cost/Miles Driven (per month values) per Meter Bin") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ylim(0, 1)
+
+joined %>%
+  mutate(`Make/Model` = paste0(make, "\n", model)) %>% 
+  filter(str_detect(`Make/Model`, "SUP")) %>% 
+  ggplot(aes(meter_bin, event_cost_per_meter_per_mnth)) +
+  geom_boxplot(outlier.shape = NA) +
+  stat_summary(fun = mean, geom = "line", shape = 20, size = 5, color = "red") +
+  facet_grid(rows = vars(`Make/Model`)) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=.5)) + 
+  labs(y = "Corrective Costs", 
+       x = "Vehicle Mileage (25K mile bins)", 
+       color = "Cost Types", 
+       # title = "Vehicle Operation Costs per Unit of Operation Time",
+       caption = "Vertical plot range limited [0, 1] and outliers omitted for visual clarity." ) + 
+  theme(legend.position="top") +
   ylim(0, 1)
 
 plot_overview_meter_bin

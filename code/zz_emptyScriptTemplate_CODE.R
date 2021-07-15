@@ -1,10 +1,10 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# This is [[insert desciption here - what it does/solve]]
+# This script handles flexdashboard knitting in worfklowr framework
 #
 # By: mike gaunt, michael.gaunt@wsp.com
 #
-# README: [[insert breif readme here]]
+# README: it knits flexdashboard and places in the docs/ folder
 #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -23,5 +23,12 @@
 #CODE BODY START================================================================
 
 
+#!/usr/bin/env Rscript
 
+# Run this script from the root of the workflowr
+# project to add the dashboard to the workflowr website.
+
+library(rmarkdown)
+render("dashboard/dashboard.Rmd")
+file.rename("dashboard/dashboard.html", "docs/dashboard.html")
 

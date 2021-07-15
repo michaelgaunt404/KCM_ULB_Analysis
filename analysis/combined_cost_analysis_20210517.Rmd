@@ -1,0 +1,214 @@
+---
+title: "Total Cost Analysi"
+author: "Mike Gaunt"
+date: "`r Sys.Date()`"
+output: github_document
+knit: (function(input, ...) {
+    rmarkdown::render(
+      input,
+      output_file = paste0(
+        xfun::sans_ext(input), '-', Sys.Date(), '.html'
+      ),
+      envir = globalenv()
+    )
+  })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  cache = FALSE, cache.lazy = FALSE, autodep = TRUE, warning = FALSE, 
+  message = FALSE, echo = TRUE, dpi = 180,
+  fig.width = 8, fig.height = 5, echo = FALSE
+  )
+
+```
+
+```{r include=FALSE}
+#sources local global file
+source(here::here("code/zz_localG.r")) 
+
+#loads the data
+# o_wo = readRDS(here("data/o_wo.rds"))
+# o_wo_agg = readRDS(here("data/o_wo_agg.rds"))
+# udcm = readRDS(here("data/udcm.rds"))
+joined = readRDS(here("data/joined_2021-05-03.rds"))
+```
+
+```{r}
+veh_costs = read_excel(
+  here("data/King_County_Metro.Asset_Inventory.2020_20210503.xlsx"),
+  sheet = "Rolling stock form_mg",
+  skip = 10) %>%
+  clean_names() %>% 
+  data.table() %>%  
+  .[,`:=`(make_model = make_model %>%  str_to_lower())]
+
+veh_costs_agg = veh_costs %>%  
+  .[,.(ave_cost = mean(replacement_cost, na.rm = T),
+       med_cost = median(replacement_cost, na.rm = T)), by = make_model] %>%  
+  separate(col = "make_model", into = c("make", "model"), sep = "/") %>%  
+  filter(!is.na(model))
+
+working_list = joined %>%
+  .[, .(manufacturer, make, model)] %>%  
+  .[order(manufacturer, model)] %>% 
+  unique() %>%  
+  mutate(across(c('manufacturer', 'make', 'model'), str_to_lower)) 
+
+```
+
+# Summary 
+
+This analysis was a quicky - I wanted to see if age had anything to do with the total cost curves. I had presumed that mileage and age were highly correlated and that total cost (maintance + replacement) would be practically the same when compared against a vehicle's mileage or age. This presumption was based off of very similar maintance cost versus age and mileage curves seen in the maintenance analysis. 
+
+But after some further investigation, it appears that the age of a vehicle does in fact creat a different total cost curve. 
+ 
+# The analysis
+
+
+```{r}
+cost_data = joined %>%  
+  .[order(unit_id, fisc_pd_corr)] %>% 
+  #making running value for maintenance by units
+  .[,`:=`(running_cost = event_cost_max), by = .(unit_id)] %>% 
+  .[,`:=`(running_cc = running_cost/meter_max_mnth)] %>%  
+  #removes cost values cause by poor data - no miles driven % negative cost
+  filter(!is.infinite(event_cost_per_meter_per_mnth) &
+           event_cost_per_meter_per_mnth >= 0) %>% 
+  mutate(across(c('manufacturer', 'make', 'model'), str_to_lower)) %>% 
+  merge.data.table(veh_costs_agg, by = c("model", "make")) %>% 
+  #creates some new cost values
+  .[,`:=`(rep_cost = ave_cost/meter_max_mnth)] %>% 
+  .[,`:=`(comb_cost = rep_cost + running_cc)] %>% 
+  mutate(`Make/Model` = paste0(make, " - ", model) %>%  
+           str_to_title() %>%
+           str_replace_all("Ii", "II"))
+
+yolo = cost_data %>%  
+  filter(unit_id == "1805") %>%  
+  ggplot() + 
+  geom_line(aes(fisc_pd_corr, cumsum(event_cost_mnth_ttl))) + 
+  geom_line(aes(fisc_pd_corr, event_cost_max))
+
+item = yolo %>%  
+  plotly::ggplotly()
+
+item %>%  
+  saveWidget(file = "1805.html")
+```
+
+Corrective costs 
+
+```{r}
+cost_data %>% 
+  # filter(unit_id == "1805") %>% 
+  ggplot() + 
+  geom_line(aes(meter_max_mnth, running_cost, group = unit_id, color = `Make/Model`), alpha = .3) + 
+  coord_cartesian(ylim=c(0, 2e5)) +
+  # facet_grid(rows = vars(`Make/Model`)) +
+  # theme() + 
+  labs(y = "Cumulative Costs ($US)", 
+       x = "Vehicle Odometer (miles)", 
+       color = "Make - Model") +
+  theme_classic() + 
+  scale_x_continuous(labels = label_comma()) + 
+  scale_y_continuous(labels = label_dollar())
+  # theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=.5), legend.position = "top") %>%  
+  # scale_y_log10() 
+```
+
+
+```{r}
+cost_data %>% 
+  # filter(unit_id == "1805") %>% 
+  ggplot() + 
+  geom_line(aes(meter_max_mnth, running_cc, group = unit_id, color = `Make/Model`), alpha = .3) + 
+  coord_cartesian(ylim=c(0, 1)) +
+  # facet_grid(rows = vars(`Make/Model`)) +
+  # theme() + 
+  labs(y = "Cumulative Costs per Miles driven ($US)", 
+       x = "Vehicle Odometer (miles)", 
+       color = "Make - Model") +
+  theme_classic() + 
+  scale_x_continuous(labels = label_comma()) + 
+  scale_y_continuous(labels = label_dollar())
+  # theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=.5), legend.position = "top") %>%  
+  # scale_y_log10() 
+```
+  
+
+```{r fig.width=10}
+cost_data %>% 
+  ggplot() + 
+  geom_line(aes(meter_max_mnth, comb_cost, group = unit_id, color = `Make/Model`), alpha = .3) + 
+  coord_cartesian(ylim=c(0, 5)) +
+  # facet_grid(rows = vars(`Make/Model`)) +
+  theme() + 
+  labs(y = "Total Costs of Ownership ($US)", 
+       x = "Vehicle Odometer (miles)", 
+       color = "Make - Model", 
+       caption = "Vertical plot range limited [0, 20] for visual clarity." ) + 
+  theme_classic() +
+  # theme(legend.position = "top") +
+  scale_x_continuous(labels = label_comma()) + 
+  scale_y_continuous(labels = label_dollar())
+  
+```
+Curves for the total cost of operation per vehicle make/model class were constructed by median costs values calculated from samples contained in 1k mileage bin increments. The cost curves displayed in the below plot should be considered the underlying cost behavior for each make/model class. As previously mentioned, most vehicles exhibit the same behavior; a trough shaped total cost curve composed of high initial costs followed by an economic minimum (flat range of total cost values) and finally, an increase in costs. The vertical lines seen in the plots indicate where 80k (left) and 125 (right) miles are located
+
+Most vehicles exhibit a total cost minimum (economic optimum for replacement) range rather than a discrete point. This suggests that vehicles can be operated at their respective economic minimums for some time before costs rise due to rising corrective costs. For example, the Amerivan Uplander, the Goshen GC II, and the Supreme Senator appear to experience their minimum total costs between 30k and 80k miles. It is important to note that not all vehicle's total costs rise equally - the Amerivan Uplander's total costs rise much faster than the latter two vehicles, both of which experience a much more gradual rise in total costs in later mileage ranges. Given these differences in behavior, it is easier to determine when the Amerivan Uplander becomes economically inefficient to operate as opposed to the Goshen GC II or the Supreme Senator.  
+
+It is important to note deviations from the behavior mentioned above. Some vehicles never experience a notable rise in total cost - the Chevrolet Astro, the Chevrolet Express, and Supreme Candidate's maintenance costs never force their respective total costs of operation above their economic minimum. This analysis indicates that given these  vehicles can be operated for the entirety of their operational lifetime without experiencing an increase of total operational costs given their respective corrective costs. In addition, the Goshen Pacer II and Startrans Senator II appear to be operating out their economic minimum; however, there does not enough data to conclude if this trend will continue or if total costs will eventually rise.
+
+
+```{r }
+cost_data %>%
+  .[,.(median = median(comb_cost)), by = .(`Make/Model`, bin = as.numeric(floor_divide(meter_max_mnth, 5000)))] %>%
+  .[order(`Make/Model`, bin)] %>% 
+  # .[,`:=`(median_roll = frollmean(median, n = 5, align = "center")), by = .(`Make/Model`)] %>%
+  # pivot_longer(cols = c(median, median_roll)) %>% 
+  mutate(`Make/Model` = str_replace_all(`Make/Model`, " - ", "\n")) %>% 
+   filter(`Make/Model` != "Chevrolet\nUplander" #&
+         ) %>% 
+      ggplot() + 
+  geom_line(aes(bin, median, color = `Make/Model`), size = 1) +
+  coord_cartesian(ylim=c(0, 5)) +
+  # facet_grid(rows = vars(`Make/Model`)) +
+  theme() + 
+  labs(y = "Cost ($US)", 
+       x = "Vehicle Odometer (miles)", 
+       color = "Median value cost curves", 
+       caption = "Vertical plot range limited [0, 5] for visual clarity." ) +
+  theme_classic() +
+  geom_hline(yintercept = 0, alpha = .5) +
+  theme(legend.position = "top") +
+  scale_x_continuous(labels = label_comma()) +
+  scale_y_continuous(labels = label_dollar())
+```
+
+
+```{r}
+cost_data %>%
+  .[,.(median = median(running_cc)), by = .(`Make/Model`, bin = as.numeric(floor_divide(meter_max_mnth, 5000)))] %>%
+  .[order(`Make/Model`, bin)] %>% 
+  # .[,`:=`(median_roll = frollmean(median, n = 5, align = "center")), by = .(`Make/Model`)] %>%
+  # pivot_longer(cols = c(median, median_roll)) %>% 
+  mutate(`Make/Model` = str_replace_all(`Make/Model`, " - ", "\n")) %>% 
+   filter(`Make/Model` != "Chevrolet\nUplander" #&
+         ) %>% 
+      ggplot() + 
+  geom_line(aes(bin, median, color = `Make/Model`), size = 1) +
+  coord_cartesian(ylim=c(0, 1)) +
+  # facet_grid(rows = vars(`Make/Model`)) +
+  theme() + 
+  labs(y = "Cost ($US)", 
+       x = "Vehicle Odometer (miles)", 
+       color = "Median value cost curves", 
+       caption = "Vertical plot range limited [0, 5] for visual clarity." ) +
+  theme_classic() +
+  geom_hline(yintercept = 0, alpha = .5) +
+  theme(legend.position = "top") +
+  scale_x_continuous(labels = label_comma()) +
+  scale_y_continuous(labels = label_dollar())
+```
+

@@ -1,0 +1,247 @@
+---
+title: "Total Cost Analysi"
+author: "Mike Gaunt"
+date: "`r Sys.Date()`"
+output: github_document
+knit: (function(input, ...) {
+    rmarkdown::render(
+      input,
+      output_file = paste0(
+        xfun::sans_ext(input), '-', Sys.Date(), '.html'
+      ),
+      envir = globalenv()
+    )
+  })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  cache = FALSE, cache.lazy = FALSE, autodep = TRUE, warning = FALSE, 
+  message = FALSE, echo = TRUE, dpi = 180,
+  fig.width = 8, fig.height = 5, echo = FALSE
+  )
+
+```
+
+```{r include=FALSE}
+#sources local global file
+source(here::here("code/zz_localG.r")) 
+
+#loads the data
+# o_wo = readRDS(here("data/o_wo.rds"))
+# o_wo_agg = readRDS(here("data/o_wo_agg.rds"))
+# udcm = readRDS(here("data/udcm.rds"))
+joined = readRDS(here("data/joined_2021-05-03.rds"))
+```
+
+```{r}
+veh_costs = read_excel(
+  here("data/King_County_Metro.Asset_Inventory.2020_20210503.xlsx"),
+  sheet = "Rolling stock form_mg",
+  skip = 10) %>%
+  clean_names() %>% 
+  data.table() %>%  
+  .[,`:=`(make_model = make_model %>%  str_to_lower())]
+
+veh_costs_agg = veh_costs %>%  
+  .[,.(ave_cost = mean(replacement_cost, na.rm = T),
+       med_cost = median(replacement_cost, na.rm = T)), by = make_model] %>%  
+  separate(col = "make_model", into = c("make", "model"), sep = "/") %>%  
+  filter(!is.na(model))
+
+working_list = joined %>%
+  .[, .(manufacturer, make, model)] %>%  
+  .[order(manufacturer, model)] %>% 
+  unique() %>%  
+  mutate(across(c('manufacturer', 'make', 'model'), str_to_lower)) 
+
+```
+
+# Summary 
+
+This analysis was a quicky - I wanted to see if age had anything to do with the total cost curves. I had presumed that mileage and age were highly correlated and that total cost (maintance + replacement) would be practically the same when compared against a vehicle's mileage or age. This presumption was based off of very similar maintance cost versus age and mileage curves seen in the maintenance analysis. 
+
+But after some further investigation, it appears that the age of a vehicle does in fact create a different total cost curve. 
+ 
+# The analysis
+
+
+```{r fig.height=12, fig.width=8}
+yolo = joined %>%  
+  .[order(unit_id, fisc_pd_corr)] %>% 
+  #making running value for maintenance by units
+  .[,`:=`(running_cost = cumsum(event_cost_max)), by = .(unit_id)] %>% 
+  .[,`:=`(running_cc = running_cost/meter_max_mnth)] %>%  
+  #removes cost values cause by poor data - no miles driven % negative cost
+  filter(!is.infinite(event_cost_per_meter_per_mnth) &
+           event_cost_per_meter_per_mnth >= 0) %>% 
+  mutate(across(c('manufacturer', 'make', 'model'), str_to_lower)) %>% 
+  merge.data.table(veh_costs_agg, by = c("model", "make")) %>% 
+  #creates some new cost values
+  .[,`:=`(rep_cost = ave_cost/meter_max_mnth)] %>% 
+  .[,`:=`(comb_cost = rep_cost + running_cc)] %>% 
+  mutate(`Make/Model` = paste0(make, "\n", model) %>%  
+           str_to_title() %>%
+           str_replace_all("Ii", "II")) %>% 
+  .[,.(median = median(comb_cost)), by = .(`Make/Model`, bin = as.numeric(floor_divide(meter_max_mnth, 1000)))] %>%
+  .[order(`Make/Model`, bin)]  %>% 
+  .[,`:=`(median_roll = frollmean(median, n = 5, align = "center")), by = .(`Make/Model`)] %>%
+  pivot_longer(cols = c(median, median_roll)) %>% 
+   filter(`Make/Model` != "Chevrolet\nUplander" #&
+         ) %>% 
+      ggplot() + 
+  geom_line(aes(bin, value, color = name), size = 1) + 
+  coord_cartesian(ylim=c(0, 20)) +
+  facet_grid(rows = vars(`Make/Model`)) +
+  theme() + 
+  labs(y = "Costs per Unit of Operation", 
+       x = "Vehicle Odometer", 
+       color = "Total Cost of Operation", 
+       caption = "Vertical plot range limited [0, 20] for visual clarity." ) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=.5), legend.position = "top") +
+  scale_color_discrete(
+    labels = c("W/o Rolling Window", "W/ Rolling Window")
+  )
+```
+
+```{r}
+# #najes median values by meter bins 
+# data2 = data1 %>% 
+#   group_by(meter_bin, `Make/Model`, name) %>%  
+#   summarise(median = median(value, na.rm = T), 
+#             sd = sd(value, na.rm = T),
+#             sqrtN = sqrt(n()),
+#             semd = 1.253*sd/sqrtN) %>%  
+#   mutate(meter_bin = as.numeric(as.character(meter_bin))) 
+# 
+# #makes median values by age bins
+# data2_age = data1 %>% 
+#   filter(!is.infinite(value)) %>% 
+#   group_by(age_bin, `Make/Model`, name) %>%  
+#   summarise(median = median(value, na.rm = T), 
+#             sd = sd(value, na.rm = T),
+#             sqrtN = sqrt(n()),
+#             semd = 1.253*sd/sqrtN) %>%  
+#   mutate(age_bin = as.numeric(as.character(age_bin))) 
+```
+
+## Box/Line Plots {.tabset}
+
+### Meter Bin
+```{r fig.width = 10, fig.height = 12}
+# data2 %>% 
+#   filter(name == "Total Cost") %>% 
+#   ggplot() +
+#   coord_cartesian(ylim=c(0, 2)) +
+#   geom_boxplot(data = data1 %>%
+#                  filter(name != "Total Cost"), 
+#                aes(meter_max_mnth, value, color = name, group = interaction(name, meterbinnn, lex.order = F)),
+#                outlier.shape = NA) +
+#   geom_point(aes(meter_bin, median, color = name)) +
+#   geom_line(aes(meter_bin, median, color = name))  +
+#   # facet_grid(rows = vars(`Make/Model`), scales = "free_x") +
+#   facet_wrap(vars(`Make/Model`), ncol = 2) +
+#   theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=.5)) + 
+#   labs(y = "Costs per Unit of Operating Time", 
+#        x = "Vehicle Mileage (20K mile bins)", 
+#        color = "Cost Types", 
+#        # title = "Vehicle Operation Costs per Unit of Operation Time",
+#        caption = "Vertical plot range limited [0, 2] and outliers omitted for visual clarity." ) + 
+#   theme(legend.position="top")
+```
+
+### Age Bin
+```{r fig.width = 12, fig.height = 12, eval=FALSE}
+data2_age %>% 
+  filter(name == "Total Cost") %>% 
+  ggplot() +
+  coord_cartesian(ylim=c(0, 2)) +
+  geom_boxplot(data = data1 %>%
+                 filter(name != "Total Cost"), 
+               aes(age_bin, value, color = name, group = interaction(name, age_bin, lex.order = F)),
+               outlier.shape = NA) +
+  geom_point(aes(age_bin, median, color = name)) +
+  geom_line(aes(age_bin, median, color = name))  +
+  facet_grid(rows = vars(`Make/Model`), scales = "free_x") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=.5)) + 
+  labs(y = "Costs per Unit of Operating Time", 
+       x = "Vehicle Age (years since mfg.)", 
+       color = "Cost Types", 
+       title = "Vehicle Operation Costs per Unit of Operation Time",
+       caption = "Vertical plot range limited [0, 2] and outliers omitted for visual clarity." ) + 
+  theme(legend.position="top")
+```
+
+## {-}
+
+## Line Plots {.tabset}
+
+### Meter Bin
+```{r fig.width = 12, fig.height = 12, eval=FALSE}
+data2 %>% 
+  ggplot() +
+  coord_cartesian(ylim=c(0, 2)) +
+  # geom_ribbon(aes(age_bin, ymin = median-semd, ymax = median+semd, fill = name), alpha = .3) +
+  geom_point(aes(meter_bin, median, color = name)) +
+  geom_line(aes(meter_bin, median, color = name)) +
+  facet_grid(rows = vars(`Make/Model`), scales = "free_x") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=.5)) + 
+  labs(y = "Costs per Unit of Operating Time", 
+       x = "Vehicle Age (years since mfg.)", 
+       color = "Cost Types", 
+       title = "Vehicle Operation Costs per Unit of Operation Time",
+       caption = "Vertical plot range limited [0, 2] and outliers omitted for visual clarity." ) + 
+  theme(legend.position="top")
+```
+### Age Bin
+```{r fig.width = 12, fig.height = 12, eval=FALSE}
+data2_age %>% 
+  ggplot() +
+  coord_cartesian(ylim=c(0, 2)) +
+  # geom_ribbon(aes(age_bin, ymin = median-semd, ymax = median+semd, fill = name), alpha = .3) +
+  geom_point(aes(age_bin, median, color = name)) +
+  geom_line(aes(age_bin, median, color = name)) +
+  facet_grid(rows = vars(`Make/Model`), scales = "free_x") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=.5)) + 
+  labs(y = "Costs per Unit of Operating Time", 
+       x = "Vehicle Age (years since mfg.)", 
+       color = "Cost Types", 
+       title = "Vehicle Operation Costs per Unit of Operation Time",
+       caption = "Vertical plot range limited [0, 2] and outliers omitted for visual clarity." ) + 
+  theme(legend.position="top") 
+```
+## {-}
+
+
+Key takeaways (20210504): 
+
+* Key takeways from the initial iteration of this analysis still stand
+  + Both replacement and maintenacne costs either become asymptotic or slowly dirft downward or upwards, respectively 
+  + No definitive trough behaviopur seen in combined cost values
+    - Initial assumption: combined costs would bend upwards at some point given pressure from increasing maintenace costs
+  + Vehicles do exhibit an increase in combined cost at extreme ranges 
+    - Likely, due to a small number of maintance events at these range bins 
+  + A few vehicles show a slight but noticable increase in comvined costs
+    - Uplander ~ 150K
+    - Entervan ~ 150K
+    - Express ~ 150K
+    - GC 2 ~ 225K
+
+
+```{r eval=FALSE}
+data2 %>% 
+  filter(str_detect(`Make/Model`, "Sup")) %>% 
+  mutate(name = fct_relevel(name, c("Corrective Cost", "Preventative Cost", "Total Cost"))) %>% 
+  ggplot() +
+  coord_cartesian(ylim=c(0, 2)) +
+  geom_point(aes(meter_bin, median, color = name)) +
+  geom_line(aes(meter_bin, median, color = name)) +
+  facet_grid(rows = vars(`Make/Model`), scales = "free_x") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=.5)) + 
+  labs(y = "Preventative Costs", 
+       x = "Vehicle Mileage (20K mile bins)", 
+       color = "Cost Types", 
+       # title = "Vehicle Operation Costs per Unit of Operation Time",
+       caption = "Vertical plot range limited [0, 2] for visual clarity." ) + 
+  theme(legend.position="top") 
+```

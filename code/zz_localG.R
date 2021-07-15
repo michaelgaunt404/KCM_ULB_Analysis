@@ -25,6 +25,7 @@ library(skimr)
 library(data.validator)
 library(here)
 library(ggridges)
+library(scales)
 
 #source helpers/utilities=======================================================
 

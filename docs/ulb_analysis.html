@@ -13,6 +13,7 @@
 
 <title>Vehicle Maintenace Cost</title>
 
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -36,7 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <script src="site_libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
 <link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="site_libs/datatables-binding-0.17/datatables.js"></script>
+<script src="site_libs/datatables-binding-0.18/datatables.js"></script>
 <link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
@@ -58,6 +59,8 @@ div.section {
   padding-top: 12px;
 }
 </style>
+
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -318,12 +321,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -336,7 +339,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">KCM_ULB_Anlysis</a>
+      <a class="navbar-brand" href="index.html">KCM_ULB_Analysis</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -353,7 +356,7 @@ div.tocify {
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis">
-    <span class="fas fa-github"></span>
+    <span class="fa fa-github"></span>
      
     Source code
   </a>
@@ -374,7 +377,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -383,7 +386,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -392,13 +395,13 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-05-05
+<strong>Last updated:</strong> 2021-07-15
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
-<strong>Knit directory:</strong> <code>KCM_ULB_Anlysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+<strong>Knit directory:</strong> <code>KCM_ULB_Analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
@@ -411,12 +414,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -483,16 +486,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommichaelgaunt404KCMULBAnlysistree7c52f5cd6e7465975d6b38bbd4cf5a4ca1ccc162targetblank7c52f5ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis/tree/7c52f5cd6e7465975d6b38bbd4cf5a4ca1ccc162" target="_blank">7c52f5c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommichaelgaunt404KCMULBAnlysistree5954f10622c4048ec4e59b49dcf5423a8d2d299btargetblank5954f10a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis/tree/5954f10622c4048ec4e59b49dcf5423a8d2d299b" target="_blank">5954f10</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcommichaelgaunt404KCMULBAnlysistree7c52f5cd6e7465975d6b38bbd4cf5a4ca1ccc162targetblank7c52f5ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcommichaelgaunt404KCMULBAnlysistree5954f10622c4048ec4e59b49dcf5423a8d2d299btargetblank5954f10a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis/tree/7c52f5cd6e7465975d6b38bbd4cf5a4ca1ccc162" target="_blank">7c52f5c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis/tree/5954f10622c4048ec4e59b49dcf5423a8d2d299b" target="_blank">5954f10</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -501,26 +504,22 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/1805.html
     Ignored:    code/.Rhistory
 
 Untracked files:
-    Untracked:  analysis/combined_cost_analysis_20210426.Rmd
-    Untracked:  analysis/combined_cost_analysis_20210503.Rmd
-    Untracked:  analysis/spurious_data.Rmd
-    Untracked:  analysis/vehicle_mapping.Rmd
-    Untracked:  code/data_analysis.R
-    Untracked:  code/data_import.R
-    Untracked:  code/general_development.R
-    Untracked:  code/utils_helpers_general.R
-    Untracked:  code/utils_script_specific.R
-    Untracked:  code/zz_emptyScriptTemplate.R
-    Untracked:  code/zz_emptyScriptTemplate_CODE.R
-    Untracked:  code/zz_emptyScriptTemplate_UTILS.R
-    Untracked:  code/zz_localG.R
+    Untracked:  1805.html
+    Untracked:  analysis/combined_cost_analysis_20210513.Rmd
+    Untracked:  analysis/combined_cost_analysis_20210517.Rmd
+    Untracked:  analysis/combined_cost_analysis_2021057.Rmd
+    Untracked:  dashboard/
 
 Unstaged changes:
-    Deleted:    analysis/combined_cost_analysis.Rmd
+    Modified:   analysis/combined_cost_analysis_20210503.Rmd
     Modified:   analysis/index.Rmd
+    Modified:   analysis/ulb_analysis.Rmd
+    Modified:   code/zz_emptyScriptTemplate_CODE.R
+    Modified:   code/zz_localG.R
 
 </code></pre>
 <p>
@@ -559,6 +558,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/michaelgaunt404/KCM_ULB_Anlysis/0c04c1139ee91c8bde690457caf4fca881e8ea4d/docs/ulb_analysis.html" target="_blank">0c04c11</a>
+</td>
+<td>
+michaelgaunt404
+</td>
+<td>
+2021-05-05
+</td>
+<td>
+added addtional total cost analysis
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -652,18 +668,18 @@ Publish the initial files for myproject
 <p>It is important to highlight what is not seen in either of these plots: an upward increase in MMMR in the later stages of a vehicles operation. Intuitively, an older vehicle may undergo more or more expensive maintenance events resulting in an increase in MMMR. This behavior would be expected to look like hockey stick - a flat trend follows by an inflection point where the MMMR would steadily increase (or potentially a step increase) - but this is not the case.</p>
 <p><em>Note:</em> The red dot is the mean value of MMMR per bin while the flat bar in the box indicates the MMMR median per bin.</p>
 <div id="aggreagted-costmile-plots" class="section level2 tabset tabset-fade tabset-pills">
-<h2>Aggreagted Cost/Mile Plots</h2>
+<h2 class="tabset tabset-fade tabset-pills">Aggreagted Cost/Mile Plots</h2>
 <div id="by-age" class="section level3">
 <h3>By Age</h3>
 <p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-3-1.png" width="1440" style="display: block; margin: auto;" /></p>
 </div>
 <div id="by-meter" class="section level3">
 <h3>By Meter</h3>
-<p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-4-1.png" width="1440" style="display: block; margin: auto;" /></p>
+<p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-4-1.png" width="1440" style="display: block; margin: auto;" /><img src="figure/ulb_analysis.Rmd/unnamed-chunk-4-2.png" width="1440" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="section" class="section level2 unnumbered">
-<h2></h2>
+<h2 class="unnumbered"></h2>
 <p>The plots above were broken out by mcc/make/model in order to investigate potential hidden MMMR trends saturated by the aggregation of all vehicles into a single plot. The plots below are all density ridge plots depicting the distribution of MMMR values per meter bin for different vehicle attributes - mcc status, manufacturer, model, and make of the vehicle.</p>
 <p>All of these plots show similar behavior as the plots above - no large increase in MMMR in the later operational usage ranges. There is no definitive inflection point that marks an increase in operational cost; at best, some plots depict a slight, constant upward drift of MMMR but this alone does not provide clear indication as to when a vehicle becomes financially burdensome.</p>
 <p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-6-1.png" width="1620" style="display: block; margin: auto;" /></p>
@@ -677,7 +693,7 @@ Publish the initial files for myproject
 <p>The plots below depicts the extreme skewness of total monthly vehicle maintenance costs. Both plots are kernel density plots that depict the distribution of cost events as defined by $1000 increments. The first plot depicts the data as it appears naturally, the second has a log adjustment applied to the x axis.</p>
 <p>Both plots indicate an there are a few extreme cost events prevalent in the data, the second plot shows a normal distribution of costs that is centered ~$1000 - with the bulk of maintenance costs being lower than that.</p>
 <div id="extreme-skewness-in-total-monthly-maintenance-costs" class="section level2 tabset tabset-fade tabset-pills">
-<h2>Extreme Skewness in Total Monthly Maintenance Costs</h2>
+<h2 class="tabset tabset-fade tabset-pills">Extreme Skewness in Total Monthly Maintenance Costs</h2>
 <div id="non-augmented" class="section level3">
 <h3>Non-Augmented</h3>
 <p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-10-1.png" width="1440" style="display: block; margin: auto;" /></p>
@@ -688,7 +704,7 @@ Publish the initial files for myproject
 </div>
 </div>
 <div id="section-1" class="section level2 unnumbered">
-<h2></h2>
+<h2 class="unnumbered"></h2>
 <p>This is relevant in determining if the frequency of <strong>expensive</strong> maintenance events and if there is an increase in said events given the and older operational age (age/meter) of a vehicle. The total monthly maintenance cost for each vehicle was binned into $1000 groupings and the number of these particular groupings were counted given the meter of the vehicle. The plot below depicts the number of maintenance event occurrences (binned by 000’s of dollars) given the meter vehicle bin - the y scale has been logged scaled.</p>
 <p><img src="figure/ulb_analysis.Rmd/unnamed-chunk-12-1.png" width="1440" style="display: block; margin: auto;" /></p>
 <p>The above plot restates the assertions made above:</p>
@@ -718,7 +734,7 @@ Publish the initial files for myproject
 </button>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
-<pre><code>R version 3.6.2 (2019-12-12)
+<pre><code>R version 4.1.0 (2021-05-18)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 17134)
 
@@ -735,32 +751,31 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] ggridges_0.5.3       here_1.0.1           data.validator_0.1.5
- [4] skimr_2.1.2          DT_0.17              lubridate_1.7.9.2   
- [7] data.table_1.13.2    janitor_2.1.0        readxl_1.3.1        
-[10] magrittr_2.0.1       forcats_0.5.1        stringr_1.4.0       
-[13] dplyr_1.0.4          purrr_0.3.4          readr_1.4.0         
-[16] tidyr_1.1.3          tibble_3.1.0         ggplot2_3.3.3       
-[19] tidyverse_1.3.0     
+ [1] scales_1.1.1         ggridges_0.5.3       here_1.0.1          
+ [4] data.validator_0.1.5 skimr_2.1.3          DT_0.18             
+ [7] lubridate_1.7.10     data.table_1.14.0    janitor_2.1.0       
+[10] readxl_1.3.1         magrittr_2.0.1       forcats_0.5.1       
+[13] stringr_1.4.0        dplyr_1.0.7          purrr_0.3.4         
+[16] readr_1.4.0          tidyr_1.1.3          tibble_3.1.2        
+[19] ggplot2_3.3.5        tidyverse_1.3.1      workflowr_1.6.2     
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.6        assertthat_0.2.1  rprojroot_2.0.2   digest_0.6.27    
- [5] utf8_1.1.4        plyr_1.8.6        repr_1.1.3        R6_2.5.0         
- [9] cellranger_1.1.0  backports_1.2.1   reprex_1.0.0      evaluate_0.14    
-[13] highr_0.8         httr_1.4.2        pillar_1.6.0      rlang_0.4.10     
-[17] rstudioapi_0.13   whisker_0.4       jquerylib_0.1.3   rmarkdown_2.7    
-[21] labeling_0.4.2    htmlwidgets_1.5.3 munsell_0.5.0     broom_0.7.5      
-[25] compiler_3.6.2    httpuv_1.5.4      modelr_0.1.8      xfun_0.19        
-[29] base64enc_0.1-3   pkgconfig_2.0.3   htmltools_0.5.1.1 tidyselect_1.1.0 
-[33] workflowr_1.6.2   fansi_0.4.2       crayon_1.4.1      dbplyr_2.1.0     
-[37] withr_2.4.1       later_1.1.0.1     grid_3.6.2        jsonlite_1.7.2   
-[41] gtable_0.3.0      lifecycle_1.0.0   DBI_1.1.1         git2r_0.28.0     
-[45] scales_1.1.1      cli_2.3.1         stringi_1.5.3     farver_2.0.3     
-[49] fs_1.5.0          promises_1.1.1    snakecase_0.11.0  xml2_1.3.2       
-[53] bslib_0.2.4       ellipsis_0.3.1    generics_0.1.0    vctrs_0.3.6      
-[57] tools_3.6.2       glue_1.4.2        crosstalk_1.1.1   hms_1.0.0        
-[61] yaml_2.2.1        colorspace_2.0-0  rvest_0.3.6       knitr_1.31       
-[65] haven_2.3.1       sass_0.3.1       </code></pre>
+ [1] httr_1.4.2        sass_0.4.0        jsonlite_1.7.2    modelr_0.1.8     
+ [5] bslib_0.2.5.1     assertthat_0.2.1  highr_0.9         cellranger_1.1.0 
+ [9] yaml_2.2.1        pillar_1.6.1      backports_1.2.1   glue_1.4.2       
+[13] digest_0.6.27     promises_1.2.0.1  rvest_1.0.0       snakecase_0.11.0 
+[17] colorspace_2.0-2  htmltools_0.5.1.1 httpuv_1.6.1      plyr_1.8.6       
+[21] pkgconfig_2.0.3   broom_0.7.8       haven_2.4.1       whisker_0.4      
+[25] later_1.2.0       git2r_0.28.0      generics_0.1.0    farver_2.1.0     
+[29] ellipsis_0.3.2    withr_2.4.2       repr_1.1.3        cli_3.0.0        
+[33] crayon_1.4.1      evaluate_0.14     fs_1.5.0          fansi_0.5.0      
+[37] xml2_1.3.2        tools_4.1.0       hms_1.1.0         lifecycle_1.0.0  
+[41] munsell_0.5.0     reprex_2.0.0      compiler_4.1.0    jquerylib_0.1.4  
+[45] rlang_0.4.11      grid_4.1.0        rstudioapi_0.13   htmlwidgets_1.5.3
+[49] crosstalk_1.1.1   base64enc_0.1-3   labeling_0.4.2    rmarkdown_2.9    
+[53] gtable_0.3.0      DBI_1.1.1         R6_2.5.0          knitr_1.33       
+[57] utf8_1.2.1        rprojroot_2.0.2   stringi_1.6.2     Rcpp_1.0.6       
+[61] vctrs_0.3.8       dbplyr_2.1.1      tidyselect_1.1.1  xfun_0.24        </code></pre>
 </div>
 </div>
 </div>
@@ -777,6 +792,8 @@ footer is added to webpages before the MathJax javascript. -->
     "HTML-CSS": { availableFonts: ["TeX"] }
   });
 </script>
+
+
 
 
 </div>
@@ -815,6 +832,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

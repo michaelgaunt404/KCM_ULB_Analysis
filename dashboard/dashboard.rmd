@@ -1,0 +1,44 @@
+---
+title: "test_flexdashboard_workflowr"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(DT)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+mtcars %>%  
+  ggplot(aes(mpg, disp)) + 
+  geom_point() +
+  geom_smooth()
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+mtcars %>%
+  ggplot(aes(wt, disp)) + 
+  geom_point() +
+  geom_smooth()
+```
+
+### Table A
+
+```{r}
+mtcars %>%  
+  datatable()
+```
