@@ -13,6 +13,7 @@
 
 <title>Combined Costs Analysis</title>
 
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -36,7 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <script src="site_libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
 <link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="site_libs/datatables-binding-0.17/datatables.js"></script>
+<script src="site_libs/datatables-binding-0.18/datatables.js"></script>
 <link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
@@ -58,6 +59,8 @@ div.section {
   padding-top: 12px;
 }
 </style>
+
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -318,12 +321,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -353,7 +356,7 @@ div.tocify {
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis">
-    <span class="fas fa-github"></span>
+    <span class="fa fa-github"></span>
      
     Source code
   </a>
@@ -392,7 +395,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-05-06
+<strong>Last updated:</strong> 2021-07-15
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -483,16 +486,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommichaelgaunt404KCMULBAnlysistreefdc9b6e337c6751c3f24b24650fd1c9a63956f61targetblankfdc9b6ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis/tree/fdc9b6e337c6751c3f24b24650fd1c9a63956f61" target="_blank">fdc9b6e</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommichaelgaunt404KCMULBAnlysistreee6f415961a00a90c584656561badc69ebd015630targetblanke6f4159a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis/tree/e6f415961a00a90c584656561badc69ebd015630" target="_blank">e6f4159</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcommichaelgaunt404KCMULBAnlysistreefdc9b6e337c6751c3f24b24650fd1c9a63956f61targetblankfdc9b6ea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcommichaelgaunt404KCMULBAnlysistreee6f415961a00a90c584656561badc69ebd015630targetblanke6f4159a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis/tree/fdc9b6e337c6751c3f24b24650fd1c9a63956f61" target="_blank">fdc9b6e</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/michaelgaunt404/KCM_ULB_Anlysis/tree/e6f415961a00a90c584656561badc69ebd015630" target="_blank">e6f4159</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -501,26 +504,8 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/1805.html
     Ignored:    code/.Rhistory
-
-Untracked files:
-    Untracked:  KCM_ULB_Analysis.Rproj
-    Untracked:  analysis/spurious_data.Rmd
-    Untracked:  code/data_analysis.R
-    Untracked:  code/data_import.R
-    Untracked:  code/general_development.R
-    Untracked:  code/utils_helpers_general.R
-    Untracked:  code/utils_script_specific.R
-    Untracked:  code/zz_emptyScriptTemplate.R
-    Untracked:  code/zz_emptyScriptTemplate_CODE.R
-    Untracked:  code/zz_emptyScriptTemplate_UTILS.R
-    Untracked:  code/zz_localG.R
-
-Unstaged changes:
-    Deleted:    KCM_ULB_Anlysis.Rproj
-    Modified:   analysis/_site.yml
-    Modified:   analysis/combined_cost_analysis_20210503.Rmd
-    Modified:   analysis/index.Rmd
 
 </code></pre>
 <p>
@@ -559,6 +544,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/michaelgaunt404/KCM_ULB_Anlysis/5954f10622c4048ec4e59b49dcf5423a8d2d299b/docs/combined_cost_analysis_20210426.html" target="_blank">5954f10</a>
+</td>
+<td>
+michaelgaunt404
+</td>
+<td>
+2021-05-06
+</td>
+<td>
+added visuals to analysis
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -645,7 +647,7 @@ wflow_publish(c(“./analysis/combined_cost_analysis_20210503.rmd”,
 </button>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
-<pre><code>R version 3.6.2 (2019-12-12)
+<pre><code>R version 4.1.0 (2021-05-18)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 17134)
 
@@ -662,32 +664,31 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] ggridges_0.5.3       here_1.0.1           data.validator_0.1.5
- [4] skimr_2.1.2          DT_0.17              lubridate_1.7.9.2   
- [7] data.table_1.13.2    janitor_2.1.0        readxl_1.3.1        
-[10] magrittr_2.0.1       forcats_0.5.1        stringr_1.4.0       
-[13] dplyr_1.0.4          purrr_0.3.4          readr_1.4.0         
-[16] tidyr_1.1.3          tibble_3.1.0         ggplot2_3.3.3       
-[19] tidyverse_1.3.0      workflowr_1.6.2     
+ [1] scales_1.1.1         ggridges_0.5.3       here_1.0.1          
+ [4] data.validator_0.1.5 skimr_2.1.3          DT_0.18             
+ [7] lubridate_1.7.10     data.table_1.14.0    janitor_2.1.0       
+[10] readxl_1.3.1         magrittr_2.0.1       forcats_0.5.1       
+[13] stringr_1.4.0        dplyr_1.0.7          purrr_0.3.4         
+[16] readr_1.4.0          tidyr_1.1.3          tibble_3.1.2        
+[19] ggplot2_3.3.5        tidyverse_1.3.1      workflowr_1.6.2     
 
 loaded via a namespace (and not attached):
- [1] httr_1.4.2        sass_0.3.1        jsonlite_1.7.2    modelr_0.1.8     
- [5] bslib_0.2.4       assertthat_0.2.1  highr_0.8         cellranger_1.1.0 
- [9] yaml_2.2.1        pillar_1.6.0      backports_1.2.1   glue_1.4.2       
-[13] digest_0.6.27     promises_1.1.1    rvest_0.3.6       snakecase_0.11.0 
-[17] colorspace_2.0-0  htmltools_0.5.1.1 httpuv_1.5.4      plyr_1.8.6       
-[21] pkgconfig_2.0.3   broom_0.7.5       haven_2.3.1       scales_1.1.1     
-[25] whisker_0.4       later_1.1.0.1     git2r_0.28.0      farver_2.0.3     
-[29] generics_0.1.0    ellipsis_0.3.1    withr_2.4.1       repr_1.1.3       
-[33] cli_2.3.1         crayon_1.4.1      evaluate_0.14     ps_1.3.2         
-[37] fs_1.5.0          fansi_0.4.2       xml2_1.3.2        tools_3.6.2      
-[41] hms_1.0.0         lifecycle_1.0.0   munsell_0.5.0     reprex_1.0.0     
-[45] compiler_3.6.2    jquerylib_0.1.3   rlang_0.4.10      grid_3.6.2       
-[49] rstudioapi_0.13   htmlwidgets_1.5.3 crosstalk_1.1.1   base64enc_0.1-3  
-[53] labeling_0.4.2    rmarkdown_2.7     gtable_0.3.0      DBI_1.1.1        
-[57] R6_2.5.0          knitr_1.31        utf8_1.1.4        rprojroot_2.0.2  
-[61] stringi_1.5.3     Rcpp_1.0.6        vctrs_0.3.6       dbplyr_2.1.0     
-[65] tidyselect_1.1.0  xfun_0.19        </code></pre>
+ [1] httr_1.4.2        sass_0.4.0        jsonlite_1.7.2    modelr_0.1.8     
+ [5] bslib_0.2.5.1     assertthat_0.2.1  highr_0.9         cellranger_1.1.0 
+ [9] yaml_2.2.1        pillar_1.6.1      backports_1.2.1   glue_1.4.2       
+[13] digest_0.6.27     promises_1.2.0.1  rvest_1.0.0       snakecase_0.11.0 
+[17] colorspace_2.0-2  htmltools_0.5.1.1 httpuv_1.6.1      plyr_1.8.6       
+[21] pkgconfig_2.0.3   broom_0.7.8       haven_2.4.1       whisker_0.4      
+[25] later_1.2.0       git2r_0.28.0      generics_0.1.0    farver_2.1.0     
+[29] ellipsis_0.3.2    withr_2.4.2       repr_1.1.3        cli_3.0.0        
+[33] crayon_1.4.1      evaluate_0.14     fs_1.5.0          fansi_0.5.0      
+[37] xml2_1.3.2        tools_4.1.0       hms_1.1.0         lifecycle_1.0.0  
+[41] munsell_0.5.0     reprex_2.0.0      compiler_4.1.0    jquerylib_0.1.4  
+[45] rlang_0.4.11      grid_4.1.0        rstudioapi_0.13   htmlwidgets_1.5.3
+[49] crosstalk_1.1.1   base64enc_0.1-3   labeling_0.4.2    rmarkdown_2.9    
+[53] gtable_0.3.0      DBI_1.1.1         R6_2.5.0          knitr_1.33       
+[57] utf8_1.2.1        rprojroot_2.0.2   stringi_1.6.2     Rcpp_1.0.6       
+[61] vctrs_0.3.8       dbplyr_2.1.1      tidyselect_1.1.1  xfun_0.24        </code></pre>
 </div>
 </div>
 
@@ -703,6 +704,8 @@ footer is added to webpages before the MathJax javascript. -->
     "HTML-CSS": { availableFonts: ["TeX"] }
   });
 </script>
+
+
 
 
 </div>
@@ -741,6 +744,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
